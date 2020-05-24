@@ -1,0 +1,187 @@
+swagger: "2.0"
+info:
+  description: Device Registry API Swagger Page.
+  version: "1.0.0"
+  title: Device Registry API
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/"
+
+# Paths supported by the server application
+paths:
+  /devices:
+    get:
+      operationId: "DeviceList.get"
+      tags:
+        - "Devices"
+      summary: "The device data structure supported by the application"
+      description: "Read the list of devices"
+      responses:
+        200:
+          description: "Successful read of device list"
+          schema:
+            type: "string"
+            items:
+              properties:
+                device_name:
+                  type: "string"
+
+    post:
+      operationId: "DeviceList.post"
+      tags:
+        - "Create Device"
+      summary: Create a device and add it to the list of devices
+      description: Create a new device in the list of devices
+      parameters:
+        - name: identifier
+          in: body
+          description: Device to create
+          required: True
+          schema:
+            type: object
+            properties:
+              identifier:
+                type: string
+                description: Device ID
+              name:
+                type: string
+                description: Device name
+              device_type:
+                type: string
+                description: Device type
+              controller_gateway:
+                type: string
+                description: Device IP Address
+              program:
+                type: string
+                description: Light display
+      responses:
+        201:
+          description: Successfully created device in list
+
+  /devices/{identifier}:
+    get:
+      operationId: "Device.get"
+      tags:
+        - "Get Device"
+      summary: "The device data structure supported by the application"
+      description: "Return one device based on user request"
+      parameters:
+        - name: identifier
+          in: path
+          description: Device to retrieve
+          type: string
+          required: True
+      responses:
+        200:
+          description: "Successful read of team list operation"
+          schema:
+              properties:
+                identifier:
+                  type: "string"
+                name:
+                  type: "string"
+                device_type:
+                  type: "string"
+                controller_gateway:
+                  type: "string"
+
+    put:
+      operationId: "Device.put"
+      tags:
+        - "Modify Device"
+      summary: Modify a device
+      description: Modify a device in the list of devices
+      parameters:
+        - name: identifier
+          in: path
+          type: string
+          required: True
+        - name: identifier
+          in: body
+          schema:
+            type: object
+            properties:
+              identifier:
+                type: string
+                description: Device ID
+              name:
+                type: string
+                description: Device name
+              device_type:
+                type: string
+                description: Device type
+              controller_gateway:
+                type: string
+                description: Device IP Address
+              program:
+                type: string
+                description: Light display
+      responses:
+        200:
+          description: Successfully modified device
+
+    delete:
+      operationId: "Device.delete"
+      tags:
+        - "Delete Device"
+      summary: Delete a device
+      description: Delete a device in the list of devices
+      parameters:
+        - name: identifier
+          in: path
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully deleted device from list
+
+  /colors:
+    get:
+      operationId: "ColorList.get"
+      tags:
+        - "Colors"
+      summary: "Colors available to the devices"
+      description: "Read the list of colors"
+      responses:
+        200:
+          description: "Successful read of color list"
+          schema:
+            type: "string"
+            items:
+              properties:
+                color_name:
+                  type: "string"
+
+    post:
+      operationId: "ColorList.post"
+      tags:
+        - "Create Color"
+      summary: Create a color and add it to the list of colors
+      description: Create a new color in the list of color
+      parameters:
+        - name: name
+          in: body
+          description: Color to create
+          required: True
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Color Name
+              r:
+                type: integer
+                description: Red Value
+              g:
+                type: integer
+                description: Green Value
+              b:
+                type: integer
+                description: Blue Value
+      responses:
+        201:
+          description: Successfully created color in list
