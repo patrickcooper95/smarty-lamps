@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: Device Registry API Swagger Page.
-  version: "1.0.0"
-  title: Device Registry API
+  description: SmartyLamps API.
+  version: "1.0.1"
+  title: SmartyLamps API
 consumes:
   - "application/json"
 produces:
@@ -12,6 +12,29 @@ basePath: "/"
 
 # Paths supported by the server application
 paths:
+  /effects/{identifier}:
+    put:
+      operationId: "Effects.put"
+      tags:
+        - "Devices"
+      summary: "Change a device's current program."
+      description: "Change a device's current program."
+      parameters:
+        - name: identifier
+          in: path
+          type: string
+          required: True
+        - name: program
+          in: body
+          schema:
+            type: object
+            properties:
+              program:
+                type: string
+                description: ""
+      responses:
+        200:
+          description: Successfully modified device
   /devices:
     get:
       operationId: "DeviceList.get"
@@ -32,7 +55,7 @@ paths:
     post:
       operationId: "DeviceList.post"
       tags:
-        - "Create Device"
+        - "Devices"
       summary: Create a device and add it to the list of devices
       description: Create a new device in the list of devices
       parameters:
@@ -66,7 +89,7 @@ paths:
     get:
       operationId: "Device.get"
       tags:
-        - "Get Device"
+        - "Devices"
       summary: "The device data structure supported by the application"
       description: "Return one device based on user request"
       parameters:
@@ -92,7 +115,7 @@ paths:
     put:
       operationId: "Device.put"
       tags:
-        - "Modify Device"
+        - "Devices"
       summary: Modify a device
       description: Modify a device in the list of devices
       parameters:
@@ -127,7 +150,7 @@ paths:
     delete:
       operationId: "Device.delete"
       tags:
-        - "Delete Device"
+        - "Devices"
       summary: Delete a device
       description: Delete a device in the list of devices
       parameters:
@@ -139,11 +162,11 @@ paths:
         200:
           description: Successfully deleted device from list
 
-  /colors:
+  /program:
     get:
-      operationId: "ColorList.get"
+      operationId: "ProgramList.get"
       tags:
-        - "Colors"
+        - "Programs"
       summary: "Colors available to the devices"
       description: "Read the list of colors"
       responses:
@@ -157,9 +180,9 @@ paths:
                   type: "string"
 
     post:
-      operationId: "ColorList.post"
+      operationId: "ProgramList.post"
       tags:
-        - "Create Color"
+        - "Programs"
       summary: Create a color and add it to the list of colors
       description: Create a new color in the list of color
       parameters:
@@ -185,3 +208,19 @@ paths:
       responses:
         201:
           description: Successfully created color in list
+
+  /program/{identifier}:
+    delete:
+      operationId: "Program.delete"
+      tags:
+        - "Programs"
+      summary: Delete a program
+      description: Delete a program from the list of programs
+      parameters:
+        - name: name
+          in: path
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully deleted program.

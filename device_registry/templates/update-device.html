@@ -3,8 +3,24 @@
 <label for="Device">Device: </label>
 
 <select name="Device" id="Device">
-  <option value="volvo">Volvo</option>
-  <option value="saab">Saab</option>
-  <option value="mercedes">Mercedes</option>
-  <option value="audi">Audi</option>
+  <option value="Desk LED">Volvo</option>
 </select>
+
+<p>Device:</p>
+
+<button type="button" onclick="populateField_SearchPt()">Device</button>
+
+<script>
+function populateField_SearchPt()
+{
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/Users/Patrick/PycharmProjects/device-api/device_registry/templates/getter.php", true);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("identifier").value = this.responseText;
+        }
+    };
+    xhttp.send();
+
+}
+</script>

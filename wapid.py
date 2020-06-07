@@ -26,6 +26,10 @@ def set_program(prog):
         utils.console()
     elif prog == "red alert":
         utils.red_alert()
+    elif prog == "yellow flow":
+        utils.it_was_all_yellow()
+    elif prog == "sun":
+        utils.sun()
     else:
         utils.set_color(prog)
 
