@@ -129,6 +129,48 @@ def red_alert():
             raise (e)
 
 
+def rainbow():
+    """Rainbow effect."""
+    r = 255
+    g = 0
+    b = 0
+
+    while loop:
+        try:
+            for count in range(255):
+                if not loop:
+                    break
+
+                np.fill((r, g, b))
+                r -= 1
+                g += 1
+
+                time.sleep(1.0)
+
+            for count in range(255):
+                if not loop:
+                    break
+
+                np.fill((r, g, b))
+                g -= 1
+                b += 1
+
+                time.sleep(1.0)
+
+            for count in range(255):
+                if not loop:
+                    break
+
+                np.fill((r, g, b))
+                b -= 1
+                r += 1
+
+                time.sleep(1.0)
+
+        except KeyboardInterrupt as e:
+            raise (e)
+
+
 def sun():
     """Lighting effects programmed to follow the sunrise and sunset."""
     first_time = True
@@ -207,7 +249,7 @@ def sun():
 
 def read_sun():
     """Read the latest sunrise/sunset times."""
-    with open('/home/pi/wapi/sun.txt', 'r') as file:
+    with open('/home/pi/WAPI/smarty-lamps/wapi/sun.txt', 'r') as file:
         times = file.read()
     file.close()
     return times
