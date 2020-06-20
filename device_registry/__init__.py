@@ -64,16 +64,23 @@ def create_table():
             connection.close()
 
 
-@app.teardown_appcontext
-def teardown_db(exception):
-    # if conn is not None:
-    #    conn.close()
-    pass
+def record_exists(table, id, cursor):
+    if table == "devices":
+        query = 'SELECT * FROM devices WHERE identifier="{identifier}"'.format(identifier=id)
+    elif table == "colors":
+        query = 'SELECT * FROM colors WHERE name="{identifier}"'.format(identifier=id)
+    else:
+        return False
+
+    if cursor.execute('SELECT EXISTS({sub_query})'.format(sub_query=query)).fetchall()[0][0] == 1:
+        return True
+    else:
+        return False
 
 
 @app.route("/update-device")
 def update_page():
-    """Serve GUI interface to interact with devices."""
+    """Serve HTML interface to interact with devices."""
     return render_template('update-device.html')
 
 
@@ -91,7 +98,38 @@ def index():
         return markdown.markdown(content)
 
 
-class ColorList(Resource):
+class Effects(Resource):
+    def put(self, identifier):
+
+        create_table()
+        connection = get_db()
+        cur = connection.cursor()
+        device_exists = record_exists("devices", identifier, cur)
+
+        if not device_exists:
+            return {'message': 'Device not found.', 'data': {}}, 404
+
+        parser = reqparse.RequestParser()
+
+        parser.add_argument('program', required=False)
+
+        # Parse the arguments into an object
+        args = parser.parse_args().items()
+
+        for field in args:
+            if field[1] is not None:
+                program_exists = record_exists("colors", field[1], cur)
+                if program_exists:
+                    cur.execute(f'UPDATE devices SET {field[0]}="{field[1]}" WHERE identifier="{identifier}"')
+                    connection.commit()
+                else:
+                    return {'message': 'Program not found.', 'data': {}}, 404
+
+        connection.close()
+        return {'message': 'Lighting effects successfully updated.', 'data': {}}, 200
+
+
+class ProgramList(Resource):
     def get(self):
         # TODO: Add create_table
         connection = get_db()
@@ -127,12 +165,29 @@ class ColorList(Resource):
         connection.commit()
         connection.close()
 
-        return {'message': 'Device registered', 'data': args}, 201
+        return {'message': 'Program added.', 'data': args}, 201
+
+
+class Program(Resource):
+    def delete(self, name):
+
+        create_table()
+        connection = get_db()
+        cur = connection.cursor()
+        exists_query = 'SELECT * FROM colors WHERE name="{name}"'.format(name=name)
+
+        if cur.execute('SELECT EXISTS({sub_query})'.format(sub_query=exists_query)).fetchall()[0][0] == 1:
+            cur.execute('DELETE FROM colors WHERE name="{name}"'.format(name=name))
+            connection.commit()
+            connection.close()
+            return {'message': 'Program successfully deleted.', 'data': {}}, 200
+        else:
+            connection.close()
+            return {'message': 'Program not found.', 'data': {}}, 404
 
 
 class DeviceList(Resource):
     def get(self):
-        # keys = ['identifier', 'name', 'device_type', 'controller_gateway']
         # Also responsible for checking existence of table.
         create_table()
         connection = get_db()
@@ -241,6 +296,8 @@ class Device(Resource):
             return {'message': 'Device not found.', 'data': {}}, 404
 
 
+api.add_resource(Effects, '/effects/<string:identifier>')
 api.add_resource(DeviceList, '/devices')
 api.add_resource(Device, '/devices/<string:identifier>')
-api.add_resource(ColorList, '/colors')
+api.add_resource(ProgramList, '/program')
+api.add_resource(Program, '/program/<string:name>')

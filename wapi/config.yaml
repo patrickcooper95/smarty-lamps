@@ -1,3 +1,16 @@
+KEY: "432cb1883011f2e49c5efc67020305c0"
+BASE_URL: "https://api.openweathermap.org/data/2.5/weather?"
+
+Moulton:
+  LAT: 34.481590
+  LON: -87.292412
+  ZIP: 35650
+
+New_York:
+  LAT: 40.772360
+  LON: -73.958770
+  ZIP: 10028
+
 Colors:
   Red: (255, 0, 0)
   Green: (0, 255, 0)
