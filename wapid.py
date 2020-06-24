@@ -56,6 +56,12 @@ def main_program():
         if not current_state == new_state:
             logging.info("Change detected. Updating lights to %s.", new_state)
             utils.loop = False
+            time.sleep(0.1)
+
+            try:
+                led_worker.join()
+            except NameError as e:
+                logging.info(e)
 
             led_worker = LedWorker(target=set_program, args=(new_state,))
             utils.loop = True
