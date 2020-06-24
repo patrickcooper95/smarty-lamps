@@ -88,6 +88,7 @@ def console():
     """Create a starship blinking console effect."""
     init_color = (255, 100, 0)
 
+    np.fill((0, 0, 0))
     init_num = random.randint(0, 49)
     init_pixels = []
     for p in range(init_num):
@@ -98,10 +99,11 @@ def console():
     while loop:
         try:
             pixel = random.randint(0, 49)
-            sleep = random.randint(1, 3)
+            index = random.randint(1, 3)
+            sleep = [0.5, 1, 1.5]
             np[pixel] = (0, 0, 0)
             np.show()
-            time.sleep(sleep)
+            time.sleep(sleep[index-1])
             np[pixel] = init_color
             np.show()
         except KeyboardInterrupt as e:
