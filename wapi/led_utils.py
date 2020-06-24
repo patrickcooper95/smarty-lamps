@@ -86,17 +86,23 @@ def it_was_all_yellow():
 
 def console():
     """Create a starship blinking console effect."""
-    orange = (255, 165, 0)
-    np.fill(orange)
+    init_color = (255, 100, 0)
+
+    init_num = random.randint(0, 49)
+    init_pixels = []
+    for p in range(init_num):
+        pixel = random.randint(0, 49)
+        init_pixels.append(pixel)
+        np[pixel] = init_color
 
     while loop:
         try:
-            pixel = random.randint(0, 29)
+            pixel = random.randint(0, 49)
             sleep = random.randint(1, 3)
             np[pixel] = (0, 0, 0)
             np.show()
             time.sleep(sleep)
-            np[pixel] = orange
+            np[pixel] = init_color
             np.show()
         except KeyboardInterrupt as e:
             raise (e)
