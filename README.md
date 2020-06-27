@@ -1,6 +1,8 @@
-# Lighting API
+# SmartyLamps
 
-## Usage
+## Description
+
+Using the NeoPixel 
 
 All responses will have the form
 
@@ -71,36 +73,5 @@ If a device with the given identifier already exists, the existing device will b
 'GET /devices/<identifer>'
 
 **Response**
-
-- '404 Not Found' if the device does not exist
-- '200 OK' on success
-
-'''json
-
-		{
-			"identifier": "samsung-tv",
-			"name": "Living Room TV",
-			"device_type": "tv",
-			"controller_gateway": "192.168.0.9",
-			"program": null
-		}
-		
-'''
-
-## Delete a device
-
-'DELETE /devices/<identifier>'
-
-**Response**
-
-- '404 Not Found' if the device does not exist
-- '204 No Content' on success
-
-
-
-
-
-
-
 
 

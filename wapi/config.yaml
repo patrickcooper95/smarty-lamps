@@ -1,6 +1,11 @@
+# Weather API Credentials
 KEY: "432cb1883011f2e49c5efc67020305c0"
 BASE_URL: "https://api.openweathermap.org/data/2.5/weather?"
 
+
+
+
+# Coordinates for weather tracking
 Moulton:
   LAT: 34.481590
   LON: -87.292412
@@ -11,6 +16,8 @@ New_York:
   LON: -73.958770
   ZIP: 10028
 
+
+# Deprecated - colors now tracked in database
 Colors:
   Red: (255, 0, 0)
   Green: (0, 255, 0)

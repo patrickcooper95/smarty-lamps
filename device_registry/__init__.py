@@ -1,4 +1,5 @@
 # Import the framework
+import logging
 import os
 import sqlite3 as sql
 from sqlite3 import Error
@@ -15,6 +16,13 @@ app = Flask(__name__)
 
 # Create the API
 api = Api(app)
+
+# Logging Setup
+LOGGER = logging.getLogger()
+logging.basicConfig(filename='daemon.log', level=logging.INFO,
+                    format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+fh = logging.FileHandler("./daemon.log")
+LOGGER.addHandler(fh)
 
 
 SWAGGER_URL = '/swagger'
@@ -107,6 +115,7 @@ class Effects(Resource):
         device_exists = record_exists("devices", identifier, cur)
 
         if not device_exists:
+            logging.info("Device %s not found.", identifier)
             return {'message': 'Device not found.', 'data': {}}, 404
 
         parser = reqparse.RequestParser()
@@ -122,7 +131,9 @@ class Effects(Resource):
                 if program_exists:
                     cur.execute(f'UPDATE devices SET {field[0]}="{field[1]}" WHERE identifier="{identifier}"')
                     connection.commit()
+                    logging.info("Device %s set to %s", field[0], field[1])
                 else:
+                    logging.info("Program %s not found.", field[1])
                     return {'message': 'Program not found.', 'data': {}}, 404
 
         connection.close()
@@ -136,6 +147,8 @@ class ProgramList(Resource):
         cur = connection.cursor()
         color_list = cur.execute('SELECT * FROM colors').fetchall()
         connection.close()
+
+        logging.info("Get all programs successful.")
 
         return {'message': 'Success', 'data': color_list}, 200
 
@@ -165,6 +178,8 @@ class ProgramList(Resource):
         connection.commit()
         connection.close()
 
+        logging.info("Added program %s successfully.", name)
+
         return {'message': 'Program added.', 'data': args}, 201
 
 
@@ -180,9 +195,11 @@ class Program(Resource):
             cur.execute('DELETE FROM colors WHERE name="{name}"'.format(name=name))
             connection.commit()
             connection.close()
+            logging.info("Program %s successfully deleted.", name)
             return {'message': 'Program successfully deleted.', 'data': {}}, 200
         else:
             connection.close()
+            logging.info("Program %s not found.", name)
             return {'message': 'Program not found.', 'data': {}}, 404
 
 
@@ -224,6 +241,8 @@ class DeviceList(Resource):
                     'VALUES(?,?,?,?,?)', new_record)
         connection.commit()
         connection.close()
+
+        logging.info("Device %s added successfully.", id)
 
         return {'message': 'Device registered', 'data': args}, 201
 
