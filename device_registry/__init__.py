@@ -109,6 +109,7 @@ def index():
 class Effects(Resource):
     def put(self, identifier):
 
+        identifier = identifier.lower()
         create_table()
         connection = get_db()
         cur = connection.cursor()
@@ -127,9 +128,10 @@ class Effects(Resource):
 
         for field in args:
             if field[1] is not None:
-                program_exists = record_exists("colors", field[1], cur)
+                new_color = field[1].lower()
+                program_exists = record_exists("colors", new_color, cur)
                 if program_exists:
-                    cur.execute(f'UPDATE devices SET {field[0]}="{field[1]}" WHERE identifier="{identifier}"')
+                    cur.execute(f'UPDATE devices SET {field[0]}="{new_color}" WHERE identifier="{identifier}"')
                     connection.commit()
                     logging.info("Device %s set to %s", field[0], field[1])
                 else:
@@ -185,7 +187,8 @@ class ProgramList(Resource):
 
 class Program(Resource):
     def delete(self, name):
-
+        
+        name = name.lower()
         create_table()
         connection = get_db()
         cur = connection.cursor()
@@ -267,6 +270,7 @@ class Device(Resource):
 
     def put(self, identifier):
 
+        identifier = identifier.lower()
         create_table()
         connection = get_db()
         cur = connection.cursor()
@@ -292,13 +296,14 @@ class Device(Resource):
 
         for field in args:
             if field[1] is not None:
-                cur.execute(f'UPDATE devices SET {field[0]}="{field[1]}" WHERE identifier="{identifier}"')
+                new_value = field[1].lower()
+                cur.execute(f'UPDATE devices SET {field[0]}="{new_value}" WHERE identifier="{identifier}"')
                 connection.commit()
         connection.close()
         return {'message': 'Device successfully updated.', 'data': {}}, 200
 
     def delete(self, identifier):
-
+      
         create_table()
         connection = get_db()
         cur = connection.cursor()
