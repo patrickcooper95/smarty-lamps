@@ -253,7 +253,6 @@ def sun():
 
                 np.fill((r, g, b))
                 time.sleep(3.0)
-        time.sleep(2.0)
 
 def read_sun():
     """Read the latest sunrise/sunset times."""
