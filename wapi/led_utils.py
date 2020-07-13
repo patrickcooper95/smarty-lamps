@@ -238,7 +238,6 @@ def sun():
 
                     np.fill((r, g, b))
                     time.sleep(3.0)
-                time_for_sunrise = False
 
             if current_time == (sunset - datetime.timedelta(minutes=5)).time().replace(second=0, microsecond=0):
                 for num in range(255):
@@ -259,7 +258,7 @@ def alarm():
     r, g, b = 1, 1, 1
     np.fill((r, g, b))
 
-    wake_up_time = datetime.datetime.strptime("20:10:00", "%H:%M:%S").time()
+    wake_up_time = datetime.datetime.strptime("07:30:00", "%H:%M:%S").time()
 
     while loop:
         current_time = datetime.datetime.now().time().replace(second=0, microsecond=0)
@@ -267,14 +266,14 @@ def alarm():
             if wake_up_time == current_time:
                 for num in range(255):
                     if not loop:
-                        break
+                       break
 
                     # Slowly increase brightness
                     r += 1
                     g += 1
                     b += 1
-                    time.sleep(2.0)
-
+                    np.fill((r, g, b))
+                    time.sleep(1.0)
         time.sleep(1.0)
 
 
