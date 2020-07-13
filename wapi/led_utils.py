@@ -207,8 +207,14 @@ def sun():
             if first_time:
                 if (current_time > sunrise.time()) and (current_time < sunset.time()):
                     np.fill(daylight)
+                    r = 255
+                    g = 255
+                    b = 255
                 else:
                     np.fill(night)
+                    r = 1
+                    g = 1
+                    b = 1
 
                 first_time = False
 
@@ -246,6 +252,31 @@ def sun():
 
                     np.fill((r, g, b))
                     time.sleep(3.0)
+
+
+def alarm():
+    """Simulate sunlight through the window at specified time."""
+    r, g, b = 1, 1, 1
+    np.fill((r, g, b))
+
+    wake_up_time = datetime.datetime.strptime("20:10:00", "%H:%M:%S").time()
+
+    while loop:
+        current_time = datetime.datetime.now().time().replace(second=0, microsecond=0)
+        if wake_up_time.hour == current_time.hour:
+            if wake_up_time == current_time:
+                for num in range(255):
+                    if not loop:
+                        break
+
+                    # Slowly increase brightness
+                    r += 1
+                    g += 1
+                    b += 1
+                    time.sleep(2.0)
+
+        time.sleep(1.0)
+
 
 
 def read_sun():
