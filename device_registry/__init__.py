@@ -3,12 +3,16 @@ import logging
 import os
 import sqlite3 as sql
 from sqlite3 import Error
+import logging
 
 from flask import Flask, render_template
 from flask_restful import Api, Resource, reqparse
 from flask_swagger_ui import get_swaggerui_blueprint
 import markdown
 from yaml import Loader, load
+
+logger = logging.getLogger()
+logging.basicConfig(filename='wapi.log',level=logging.DEBUG)
 
 
 # Create an instance of Flask
@@ -129,6 +133,8 @@ class Effects(Resource):
         for field in args:
             if field[1] is not None:
                 new_color = field[1].lower()
+                logger.info(new_color)
+                
                 program_exists = record_exists("colors", new_color, cur)
                 if program_exists:
                     cur.execute(f'UPDATE devices SET {field[0]}="{new_color}" WHERE identifier="{identifier}"')
