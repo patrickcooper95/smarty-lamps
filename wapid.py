@@ -1,10 +1,12 @@
 import daemon
 import logging
+import os
 import threading
 import time
 import sqlite3 as sql
 
 import wapi.led_utils as utils
+import wapi.configs as configs
 
 LOGGER = logging.getLogger()
 logging.basicConfig(filename='daemon.log', level=logging.INFO,
@@ -50,7 +52,7 @@ def main_program():
     current_state = ""
     while True:
         time.sleep(0.05)
-        conn = sql.connect('/home/pi/WAPI/smarty-lamps/devices.db')
+        conn = sql.connect(os.path.join(configs.base_path, 'devices.db'))
         cur = conn.cursor()
         new_state = cur.execute('SELECT devices.program FROM devices WHERE identifier="desk-led"').fetchall()[0][0]
         # dynamic = cur.execute(f'SELECT * FROM colors WHERE name={new_state}').fetchall()[0][4]

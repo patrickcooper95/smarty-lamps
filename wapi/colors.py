@@ -1,14 +1,13 @@
 """Colors that can be used for the LEDs."""
 from ast import literal_eval
+import os
 import sqlite3 as sql
 
-# from wapi import configs
-
-# config = configs.config
+from wapi import configs
 
 
 def get_rgb(color):
-    conn = sql.connect('/home/pi/WAPI/smarty-lamps/devices.db')
+    conn = sql.connect(os.path.join(configs.base_path, 'devices.db'))
     cur = conn.cursor()
     rgb = cur.execute(f'SELECT colors.r, colors.g, colors.b FROM colors WHERE lower(name)="{color}"').fetchall()[0]
     conn.close()
