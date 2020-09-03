@@ -11,6 +11,8 @@ from flask_swagger_ui import get_swaggerui_blueprint
 import markdown
 from yaml import Loader, load
 
+import wapi.configs as configs
+
 logger = logging.getLogger()
 logging.basicConfig(filename='wapi.log',level=logging.DEBUG)
 
@@ -38,7 +40,7 @@ app.register_blueprint(blueprint, url_prefix=SWAGGER_URL)
 def get_db():
     """create a database connection to a SQLite database"""
     try:
-        conn = sql.connect('devices.db')
+        conn = sql.connect(os.path.join(configs.base_path, 'devices.db'))
         # print(sql.version)
         return conn
     except Error as e:
