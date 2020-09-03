@@ -32,7 +32,7 @@ LOGGER.addHandler(fh)
 
 
 SWAGGER_URL = '/swagger'
-swagger_yml = load(open("swagger.yml", 'r'), Loader=Loader)
+swagger_yml = load(open(os.path.join(configs.base_path, "swagger.yml"), 'r'), Loader=Loader)
 blueprint = get_swaggerui_blueprint(SWAGGER_URL, swagger_yml, config={'spec': swagger_yml})
 app.register_blueprint(blueprint, url_prefix=SWAGGER_URL)
 
