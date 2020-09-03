@@ -12,7 +12,7 @@ import wapi.colors as colors
 import wapi.configs as configs
 import wapi.get_sun as get_sun
 
-np = neopixel.NeoPixel(board.D18, 50)
+np = neopixel.NeoPixel(board.D18, 60)
 
 loop = True
 
