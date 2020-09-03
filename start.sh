@@ -3,7 +3,7 @@
 echo "Starting SmartyLamps in $1 environment."
 
 # Set environment for script and export for Python.
-ENVIRONMENT = $1
+ENVIRONMENT=$1
 export ENV=$ENVIRONMENT
 
 # Start the WAPI API and WAPI daemon.
