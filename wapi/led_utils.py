@@ -3,7 +3,6 @@ import random
 import sqlite3 as sql
 import time
 
-
 import board
 import neopixel
 
@@ -13,8 +12,6 @@ import wapi.get_sun as get_sun
 np = neopixel.NeoPixel(board.D18, 50)
 
 loop = True
-
-programs = ["pulse", "console"]
 
 
 def set_color(color):
@@ -255,7 +252,7 @@ def sun():
 
 def alarm():
     """Simulate sunlight through the window at specified time."""
-    r, g, b = 1, 1, 1
+    r, g, b = 0, 0, 0
     np.fill((r, g, b))
 
     wake_up_time = datetime.datetime.strptime("07:30:00", "%H:%M:%S").time()
@@ -275,7 +272,6 @@ def alarm():
                     np.fill((r, g, b))
                     time.sleep(1.0)
         time.sleep(1.0)
-
 
 
 def read_sun():
