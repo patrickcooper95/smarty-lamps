@@ -66,10 +66,12 @@ class Light:
 
     def update(self, new_setting):
         """Public method - set new program."""
-        self._program = new_setting
+        self.program = new_setting
 
-        if self._program in dynamic_programs:
-            self._dynamic = True
+        if self.program in dynamic_programs:
+            self.dynamic = True
+        else:
+            self.dynamic = False
 
 
 
