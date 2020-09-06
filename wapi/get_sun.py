@@ -1,4 +1,4 @@
-import datetime
+import datetime, os
 
 import requests
 
@@ -19,6 +19,6 @@ def get_sun():
     sunset = (datetime.datetime.fromtimestamp(weather['sys']['sunset']).strftime('%H:%M:%S'))
 
     # TODO: pickle to file
-    with open('/home/pi/WAPI/smarty-lamps/wapi/sun.txt', 'w') as file:
+    with open(os.path.join(configs.base_path, "wapi", "sun.txt"), 'w') as file:
         file.write(f"{sunrise},{sunset}")
     file.close()

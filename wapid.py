@@ -1,11 +1,12 @@
 import daemon
 import logging
+import os
 import threading
 import time
 import sqlite3 as sql
 
 import wapi.led_utils as utils
-from led_control import Light
+import wapi.configs as configs
 
 LOGGER = logging.getLogger()
 logging.basicConfig(filename='daemon.log', level=logging.INFO,
@@ -13,9 +14,6 @@ logging.basicConfig(filename='daemon.log', level=logging.INFO,
 fh = logging.FileHandler("./daemon.log")
 LOGGER.addHandler(fh)
 logging.info("Daemon starting.")
-
-# Create Light object to be used
-lights = Light()
 
 
 class LedWorker(threading.Thread):
@@ -51,33 +49,30 @@ def set_program(prog):
 
 
 def main_program():
+    current_state = ""
     while True:
         time.sleep(0.05)
-        conn = sql.connect('/home/pi/WAPI/smarty-lamps/devices.db')
+        conn = sql.connect(os.path.join(configs.base_path, 'devices.db'))
         cur = conn.cursor()
         new_state = cur.execute('SELECT devices.program FROM devices WHERE identifier="desk-led"').fetchall()[0][0]
+        # dynamic = cur.execute(f'SELECT * FROM colors WHERE name={new_state}').fetchall()[0][4]
         conn.close()
-        if not lights.program == new_state:
-
+        if not current_state == new_state:
             logging.info("Change detected. Updating lights to %s.", new_state)
+            utils.loop = False
+            time.sleep(0.1)
 
-            # Stop current forked thread for the dynamic program
-            if lights.dynamic:
-                utils.loop = False
-                time.sleep(0.1)
-
-                try:
-                    led_worker.join()
-                except NameError as e:
-                    logging.info(e)
-
-            lights.update(new_state)
+            try:
+                led_worker.join()
+            except NameError as e:
+                logging.info(e)
 
             led_worker = LedWorker(target=set_program, args=(new_state,))
             utils.loop = True
 
             logging.info("Starting new thread.")
             led_worker.start()
+            current_state = new_state
 
 
 context = daemon.DaemonContext(

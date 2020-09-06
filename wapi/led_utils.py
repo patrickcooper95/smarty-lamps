@@ -1,4 +1,5 @@
 import datetime
+import os
 import random
 import sqlite3 as sql
 import time
@@ -7,9 +8,10 @@ import board
 import neopixel
 
 import wapi.colors as colors
+import wapi.configs as configs
 import wapi.get_sun as get_sun
 
-np = neopixel.NeoPixel(board.D18, 50)
+np = neopixel.NeoPixel(board.D18, 60)
 
 loop = True
 
@@ -276,7 +278,7 @@ def alarm():
 
 def read_sun():
     """Read the latest sunrise/sunset times."""
-    with open('/home/pi/WAPI/smarty-lamps/wapi/sun.txt', 'r') as file:
+    with open(os.path.join(configs.base_path, "wapi", "sun.txt"), "r") as file:
         times = file.read()
     file.close()
     return times
