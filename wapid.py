@@ -56,7 +56,7 @@ def set_program(prog):
 def main_program():
     while True:
         time.sleep(0.05)
-        conn = sql.connect(os.path.join(configs.base_path, 'devices.db'))
+        conn = sql.connect(os.path.join(configs.db_path))
         cur = conn.cursor()
         new_state = cur.execute('SELECT devices.program FROM devices WHERE identifier="desk-led"').fetchall()[0][0]
         conn.close()

@@ -40,7 +40,7 @@ app.register_blueprint(blueprint, url_prefix=SWAGGER_URL)
 def get_db():
     """create a database connection to a SQLite database"""
     try:
-        conn = sql.connect(os.path.join(configs.base_path, 'devices.db'))
+        conn = sql.connect(os.path.join(configs.db_path))
         # print(sql.version)
         return conn
     except Error as e:

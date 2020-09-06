@@ -7,7 +7,7 @@ from wapi import configs
 
 
 def get_rgb(color):
-    conn = sql.connect(os.path.join(configs.base_path, 'devices.db'))
+    conn = sql.connect(os.path.join(configs.db_path))
     cur = conn.cursor()
     rgb = cur.execute(f'SELECT colors.r, colors.g, colors.b FROM colors WHERE lower(name)="{color}"').fetchall()[0]
     conn.close()
