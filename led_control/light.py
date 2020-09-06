@@ -17,7 +17,7 @@ dynamic_programs = [
 
 class Light:
     def __init__(self):
-        self.num = 50
+        self.num = 60
         self.np = neopixel.NeoPixel(board.D18, self.num)
         self._brightness = 1.0
         self._r = 0
@@ -55,13 +55,17 @@ class Light:
 
     @brightness.setter
     def brightness(self, new_bright):
+
         self._brightness = new_bright
-        self._r = self._r * self._brightness
-        self._g = self._g * self._brightness
-        self._b = self._b * self._brightness
+
+        # Set RGB to nearest whole number when multiplied by brightness
+        self._r = round(self._r * self._brightness)
+        self._g = round(self._g * self._brightness)
+        self._b = round(self._b * self._brightness)
         self.np.fill((self._r, self._g, self._b))
 
     def update(self, new_setting):
+        """Public method - set new program."""
         self._program = new_setting
 
         if self._program in dynamic_programs:
