@@ -15,9 +15,10 @@ dynamic_programs = [
     "wake me up"
 ]
 
+
 class Light:
     def __init__(self):
-        self.num = 60
+        self.num = 40
         self.np = neopixel.NeoPixel(board.D18, self.num)
         self._brightness = 1.0
         self._r = 0
@@ -25,6 +26,7 @@ class Light:
         self._b = 0
         self._program = None
         self._dynamic = False
+        self._on = True
 
     def set_static(self, color):
         """Set a static color."""
@@ -39,6 +41,20 @@ class Light:
     @program.setter
     def program(self, new_program):
         self._program = new_program
+
+    @property
+    def on(self):
+        """Defines the current power state."""
+        return self._on
+
+    @on.setter
+    def on(self, state):
+        if state == "off":
+            self._brightness = 0
+            self._on = False
+        elif state == "on":
+            self._brightness = 1
+            self._on = True
 
     @property
     def dynamic(self):
@@ -72,6 +88,3 @@ class Light:
             self.dynamic = True
         else:
             self.dynamic = False
-
-
-

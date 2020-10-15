@@ -252,6 +252,7 @@ def sun():
                     time.sleep(3.0)
         time.sleep(1.0)
 
+
 def alarm():
     """Simulate sunlight through the window at specified time."""
     r, g, b = 0, 0, 0

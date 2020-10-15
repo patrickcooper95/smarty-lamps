@@ -10,12 +10,12 @@ import wapi.led_utils as utils
 
 from led_control import Light
 
-LOGGER = logging.getLogger()
 logging.basicConfig(filename='daemon.log', level=logging.INFO,
-                    format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+                    format='%(asctime)s %(name)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 fh = logging.FileHandler("./daemon.log")
+LOGGER = logging.getLogger(__name__)
 LOGGER.addHandler(fh)
-logging.info("Daemon starting.")
+LOGGER.info("Daemon starting.")
 
 # Create Light object to be used
 lights = Light()
@@ -62,7 +62,7 @@ def main_program():
         conn.close()
         if not lights.program == new_state:
 
-            logging.info("Change detected. Updating lights to %s.", new_state)
+            LOGGER.info("Change detected. Updating lights to %s.", new_state)
 
             # Stop current forked thread for the dynamic program
             if lights.dynamic:
@@ -72,7 +72,7 @@ def main_program():
                 try:
                     led_worker.join()
                 except NameError as e:
-                    logging.info(e)
+                    LOGGER.info(e)
 
             # Update Light object
             lights.update(new_state)
@@ -82,15 +82,15 @@ def main_program():
             led_worker = LedWorker(target=set_program, args=(new_state,))
             utils.loop = True
 
-            logging.info("Starting new thread.")
+            LOGGER.info("Starting new thread.")
             led_worker.start()
 
-            logging.info(f"Program set to: {lights.program}")
-            logging.info(f"Brightness: {lights.brightness}")
+            LOGGER.info(f"Program set to: {lights.program}")
+            LOGGER.info(f"Brightness: {lights.brightness}")
             if lights.dynamic:
-                logging.info("Program is dynamic.")
+                LOGGER.info("Program is dynamic.")
             else:
-                logging.info("Program is static. Forked thread finished.")
+                LOGGER.info("Program is static.")
 
 
 context = daemon.DaemonContext(
