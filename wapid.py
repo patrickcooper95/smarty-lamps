@@ -10,8 +10,9 @@ import wapi.led_utils as utils
 
 from led_control import Light
 
-logging.basicConfig(filename='daemon.log', level=logging.INFO,
-                    format='%(asctime)s %(name)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(filename='/home/logs/smarty-lamps.log', level=logging.INFO,
+                    format='%(asctime)s %(name)s %(levelname)s %(message)s',
+                    datefmt='%m/%d/%Y %I:%M:%S %p')
 fh = logging.FileHandler("./daemon.log")
 LOGGER = logging.getLogger(__name__)
 LOGGER.addHandler(fh)
@@ -70,11 +71,13 @@ def main_program():
                 time.sleep(0.1)
 
                 try:
+                    LOGGER.info("Trying to rejoin threads.")
                     led_worker.join()
                 except NameError as e:
                     LOGGER.info(e)
 
             # Update Light object
+            LOGGER.info(f"Updating light object to: {new_state}")
             lights.update(new_state)
 
             # Start new thread to initiate new program
