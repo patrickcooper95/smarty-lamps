@@ -10,7 +10,7 @@ import wapi.led_utils as utils
 
 from led_control import Light
 
-logging.basicConfig(filename='/home/logs/smarty-lamps.log', level=logging.INFO,
+logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log', level=logging.INFO,
                     format='%(asctime)s %(name)s %(levelname)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p')
 fh = logging.FileHandler("./daemon.log")
