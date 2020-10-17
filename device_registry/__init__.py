@@ -14,7 +14,7 @@ from yaml import Loader, load
 import wapi.configs as configs
 
 # Logging
-logging.basicConfig(filename='/home/logs/smarty-lamps.log', level=logging.INFO,
+logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log', level=logging.INFO,
                     format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 # fh = logging.FileHandler("./daemon.log")
 LOGGER = logging.getLogger(__name__)
