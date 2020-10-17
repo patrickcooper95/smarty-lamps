@@ -3,7 +3,7 @@ import os
 import yaml
 
 # Get environment variable for environment - default to PROD if not found
-environment = os.getenv("ENV", "PROD")
+environment = os.getenv("ENV", "DEV")
 base_path = os.path.join("/home", "pi", environment, "smarty-lamps")
 
 
