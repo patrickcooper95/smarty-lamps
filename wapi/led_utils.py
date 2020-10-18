@@ -12,7 +12,8 @@ import wapi.colors as colors
 import wapi.configs as configs
 import wapi.get_sun as get_sun
 
-np = neopixel.NeoPixel(board.D18, 60)
+num_led = 40
+np = neopixel.NeoPixel(board.D18, num_led)
 
 loop = True
 
@@ -69,7 +70,7 @@ def it_was_all_yellow():
                     break
 
                 green -= 1
-                for pixel in range(50):
+                for pixel in range(num_led):
                     np[pixel] = (255, green, 0)
                 time.sleep(0.5)
 
@@ -78,7 +79,7 @@ def it_was_all_yellow():
                     break
 
                 green += 1
-                for pixel in range(50):
+                for pixel in range(num_led):
                     np[pixel] = (255, green, 0)
                 time.sleep(0.5)
 
@@ -91,16 +92,16 @@ def console():
     init_color = (255, 100, 0)
 
     np.fill((0, 0, 0))
-    init_num = random.randint(0, 49)
+    init_num = random.randint(0, num_led)
     init_pixels = []
     for p in range(init_num):
-        pixel = random.randint(0, 49)
+        pixel = random.randint(0, num_led)
         init_pixels.append(pixel)
         np[pixel] = init_color
 
     while loop:
         try:
-            pixel = random.randint(0, 49)
+            pixel = random.randint(0, num_led)
             index = random.randint(1, 3)
             sleep = [0.5, 1, 1.5]
             np[pixel] = (0, 0, 0)
@@ -255,6 +256,7 @@ def sun():
                     time.sleep(3.0)
         time.sleep(1.0)
 
+
 def alarm():
     """Simulate sunlight through the window at specified time."""
     r, g, b = 1, 1, 1
@@ -277,7 +279,6 @@ def alarm():
                     np.fill((r, g, b))
                     time.sleep(1.0)
         time.sleep(1.0)
-
 
 
 def read_sun():
