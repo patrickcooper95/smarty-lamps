@@ -44,6 +44,8 @@ def set_program(prog):
         utils.rainbow()
     elif prog == "wake me up":
         utils.alarm()
+    elif prog == "light show":
+        utils.light_show()
     else:
         utils.set_color(prog)
 
