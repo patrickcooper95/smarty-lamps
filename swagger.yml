@@ -217,7 +217,7 @@ paths:
       summary: Delete a program
       description: Delete a program from the list of programs
       parameters:
-        - name: name
+        - name: identifier
           in: path
           type: string
           required: True
