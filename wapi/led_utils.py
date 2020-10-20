@@ -194,14 +194,10 @@ def light_show():
         for led in range(2, num_led + 1, 2):
             np[led] = (255, 255, 255)
 
-            time.sleep(0.5)
-
             np[led] = (255, 0, 0)
 
         for led in range(0, num_led, 2):
             np[led] = (255, 255, 255)
-
-            time.sleep(0.5)
 
             np[led] = (255, 0, 0)
 
