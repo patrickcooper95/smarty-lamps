@@ -185,17 +185,20 @@ def rainbow():
 def light_show():
     """Light show effect."""
     r = 255
-    g = 230
-    b = 230
+    g = 255
+    b = 255
 
     np.fill((r, g, b))
 
+    for led in range(1, num_led, 2):
+        np[led] = (255, 0, 0)
+
     while loop:
         for led in range(1, num_led, 2):
+            np[led] = (255, 255, 255)
+        time.sleep(0.3)
+        for led in range(1, num_led, 2):
             np[led] = (255, 0, 0)
-            time.sleep(0.1)
-            np[led] = (255, 230, 230)
-
 
 def sun():
     """Lighting effects programmed to follow the sunrise and sunset."""
