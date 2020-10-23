@@ -35,22 +35,7 @@ class LedWorker(threading.Thread):
 
 
 def set_program(prog):
-    if prog == "pulse":
-        utils.pulse()
-    elif prog == "console":
-        utils.console()
-    elif prog == "red alert":
-        utils.red_alert()
-    elif prog == "yellow flow":
-        utils.it_was_all_yellow()
-    elif prog == "sun":
-        utils.sun()
-    elif prog == "rainbow":
-        utils.rainbow()
-    elif prog == "wake me up":
-        utils.alarm()
-    else:
-        utils.set_color(prog)
+    lights.update(prog)
 
 
 def main_program():
@@ -75,7 +60,7 @@ def main_program():
                     LOGGER.info(e)
 
             # Update Light object
-            lights.update(new_state)
+            # lights.update(new_state)
 
             # Start new thread to initiate new program
             # TODO: Eventually, change this to only kick off new thread if dynamic

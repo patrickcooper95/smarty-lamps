@@ -1,7 +1,7 @@
 import board
 import neopixel
 
-from wapi import colors, led_utils
+from wapi import colors, led_utils as utils
 
 # Current list of programs that are dynamic
 # TODO: This will eventually be class-based
@@ -72,19 +72,32 @@ class Light:
     @brightness.setter
     def brightness(self, new_bright):
 
-        self._brightness = new_bright
+        # only set if value is valid (b/t 0 and 1)
+        if 1 >= new_bright >= 0:
+            self.np.brightness = new_bright
 
-        # Set RGB to nearest whole number when multiplied by brightness
-        self._r = round(self._r * self._brightness)
-        self._g = round(self._g * self._brightness)
-        self._b = round(self._b * self._brightness)
-        self.np.fill((self._r, self._g, self._b))
-
-    def update(self, new_setting):
+    def update(self, prog):
         """Public method - set new program."""
-        self.program = new_setting
+        self.program = prog
 
         if self.program in dynamic_programs:
             self.dynamic = True
         else:
             self.dynamic = False
+
+        if prog == "pulse":
+            utils.pulse()
+        elif prog == "console":
+            utils.console()
+        elif prog == "red alert":
+            utils.red_alert()
+        elif prog == "yellow flow":
+            utils.it_was_all_yellow()
+        elif prog == "sun":
+            utils.sun()
+        elif prog == "rainbow":
+            utils.rainbow()
+        elif prog == "wake me up":
+            utils.alarm()
+        else:
+            utils.set_color(prog)
