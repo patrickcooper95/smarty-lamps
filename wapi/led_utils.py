@@ -11,18 +11,17 @@ import wapi.colors as colors
 import wapi.configs as configs
 import wapi.get_sun as get_sun
 
-np = neopixel.NeoPixel(board.D18, 60)
 
 loop = True
 
 
-def set_color(color):
+def set_color(np, color):
     """Set a static color."""
     red, green, blue = colors.get_rgb(color)
     np.fill((red, green, blue))
 
 
-def pulse():
+def pulse(np):
     """Create a blue pulsing effect."""
     r = 0
     g = 0
@@ -53,7 +52,7 @@ def pulse():
             raise (e)
 
 
-def it_was_all_yellow():
+def it_was_all_yellow(np):
     """Create lights for Yellow."""
     yellow = (255, 255, 0)
     np.fill(yellow)
@@ -83,7 +82,7 @@ def it_was_all_yellow():
             raise (e)
 
 
-def console():
+def console(np):
     """Create a starship blinking console effect."""
     init_color = (255, 100, 0)
 
@@ -109,7 +108,7 @@ def console():
             raise (e)
 
 
-def red_alert():
+def red_alert(np):
     """Red alert flash."""
     r = 255
     g = 0
@@ -136,7 +135,7 @@ def red_alert():
             raise (e)
 
 
-def rainbow():
+def rainbow(np):
     """Rainbow effect."""
     r = 255
     g = 0
@@ -178,7 +177,7 @@ def rainbow():
             raise (e)
 
 
-def sun():
+def sun(np):
     """Lighting effects programmed to follow the sunrise and sunset."""
     first_time = True
     TIME = datetime.datetime.strptime("12:05:00", "%H:%M:%S").time()
@@ -253,7 +252,7 @@ def sun():
         time.sleep(1.0)
 
 
-def alarm():
+def alarm(np):
     """Simulate sunlight through the window at specified time."""
     r, g, b = 0, 0, 0
     np.fill((r, g, b))

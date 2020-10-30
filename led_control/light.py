@@ -18,7 +18,7 @@ dynamic_programs = [
 
 class Light:
     def __init__(self):
-        self.num = 40
+        self.num = 45
         self.np = neopixel.NeoPixel(board.D18, self.num)
         self._brightness = 1.0
         self._r = 0
@@ -86,18 +86,18 @@ class Light:
             self.dynamic = False
 
         if prog == "pulse":
-            utils.pulse()
+            utils.pulse(self.np)
         elif prog == "console":
-            utils.console()
+            utils.console(self.np)
         elif prog == "red alert":
-            utils.red_alert()
+            utils.red_alert(self.np)
         elif prog == "yellow flow":
-            utils.it_was_all_yellow()
+            utils.it_was_all_yellow(self.np)
         elif prog == "sun":
-            utils.sun()
+            utils.sun(self.np)
         elif prog == "rainbow":
-            utils.rainbow()
+            utils.rainbow(self.np)
         elif prog == "wake me up":
-            utils.alarm()
+            utils.alarm(self.np)
         else:
-            utils.set_color(prog)
+            utils.set_color(self.np, prog)
