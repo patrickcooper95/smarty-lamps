@@ -3,7 +3,9 @@ KEY: "432cb1883011f2e49c5efc67020305c0"
 BASE_URL: "https://api.openweathermap.org/data/2.5/weather?"
 
 
-
+# ENV Configs
+DEV: '/home/pi/DEV'
+PROD: '/home/pi/WAPI'
 
 # Coordinates for weather tracking
 Moulton:
@@ -16,17 +18,7 @@ New_York:
   LON: -73.958770
   ZIP: 10028
 
-
-# Deprecated - colors now tracked in database
-Colors:
-  Red: (255, 0, 0)
-  Green: (0, 255, 0)
-  Blue: (0, 0, 255)
-  White: (255, 255, 255)
-  Yellow: (255, 255, 0)
-  Grey: (32, 32, 255)
-  Overcast: (201, 226, 255)
-  Orange: (255, 128, 0)
-  Teal: (0, 255, 255)
-  Purple: (102, 0, 204)
-  Off: (0, 0, 0)
+Programs:
+  Pulse: "pulse"
+  Red Alert: "red alert"
+  Yellow Flow: "it was all yellow"

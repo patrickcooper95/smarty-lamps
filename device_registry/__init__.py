@@ -13,23 +13,18 @@ from yaml import Loader, load
 
 import wapi.configs as configs
 
-logger = logging.getLogger()
-logging.basicConfig(filename='wapi.log',level=logging.DEBUG)
-
+# Logging
+logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log', level=logging.INFO,
+                    format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+# fh = logging.FileHandler("./daemon.log")
+LOGGER = logging.getLogger(__name__)
+# LOGGER.addHandler(fh)
 
 # Create an instance of Flask
 app = Flask(__name__)
 
 # Create the API
 api = Api(app)
-
-# Logging Setup
-LOGGER = logging.getLogger()
-logging.basicConfig(filename='daemon.log', level=logging.INFO,
-                    format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-fh = logging.FileHandler("./daemon.log")
-LOGGER.addHandler(fh)
-
 
 SWAGGER_URL = '/swagger'
 swagger_yml = load(open(os.path.join(configs.base_path, "swagger.yml"), 'r'), Loader=Loader)
@@ -40,7 +35,7 @@ app.register_blueprint(blueprint, url_prefix=SWAGGER_URL)
 def get_db():
     """create a database connection to a SQLite database"""
     try:
-        conn = sql.connect(os.path.join(configs.base_path, 'devices.db'))
+        conn = sql.connect(os.path.join(configs.db_path))
         # print(sql.version)
         return conn
     except Error as e:
@@ -53,6 +48,7 @@ def table_exists(conn):
     tables = cur.execute('SELECT COUNT(*) '
                          'FROM sqlite_master '
                          'WHERE type="table" AND name="devices"')
+    LOGGER.info(f"Running query: {tables}")
 
     if tables.fetchone()[0] == 1:
         return True
@@ -66,6 +62,7 @@ def create_table():
     cur = connection.cursor()
     if not table_exists(connection):
         try:
+            LOGGER.info("Creating devices table.")
             cur.execute('create table devices(identifier TEXT,' +
                         'name TEXT,' +
                         'device_type TEXT,' +
@@ -73,7 +70,7 @@ def create_table():
                         'controller_gateway TEXT)')
             connection.commit()
         except Error as e:
-            print(e)
+            LOGGER.info(e)
         finally:
             connection.close()
 
@@ -86,6 +83,7 @@ def record_exists(table, id, cursor):
     else:
         return False
 
+    LOGGER.info(f"Running query: {query}")
     if cursor.execute('SELECT EXISTS({sub_query})'.format(sub_query=query)).fetchall()[0][0] == 1:
         return True
     else:
@@ -122,7 +120,7 @@ class Effects(Resource):
         device_exists = record_exists("devices", identifier, cur)
 
         if not device_exists:
-            logging.info("Device %s not found.", identifier)
+            LOGGER.info("Device %s not found.", identifier)
             return {'message': 'Device not found.', 'data': {}}, 404
 
         parser = reqparse.RequestParser()
@@ -135,15 +133,15 @@ class Effects(Resource):
         for field in args:
             if field[1] is not None:
                 new_color = field[1].lower()
-                logger.info(new_color)
+                LOGGER.info(new_color)
                 
                 program_exists = record_exists("colors", new_color, cur)
                 if program_exists:
                     cur.execute(f'UPDATE devices SET {field[0]}="{new_color}" WHERE identifier="{identifier}"')
                     connection.commit()
-                    logging.info("Device %s set to %s", field[0], field[1])
+                    LOGGER.info("Device %s set to %s", field[0], field[1])
                 else:
-                    logging.info("Program %s not found.", field[1])
+                    LOGGER.info("Program %s not found.", field[1])
                     return {'message': 'Program not found.', 'data': {}}, 404
 
         connection.close()
@@ -158,7 +156,7 @@ class ProgramList(Resource):
         color_list = cur.execute('SELECT * FROM colors').fetchall()
         connection.close()
 
-        logging.info("Get all programs successful.")
+        LOGGER.info("Get all programs successful.")
 
         return {'message': 'Success', 'data': color_list}, 200
 
@@ -188,7 +186,7 @@ class ProgramList(Resource):
         connection.commit()
         connection.close()
 
-        logging.info("Added program %s successfully.", name)
+        LOGGER.info("Added program %s successfully.", name)
 
         return {'message': 'Program added.', 'data': args}, 201
 
@@ -206,11 +204,11 @@ class Program(Resource):
             cur.execute('DELETE FROM colors WHERE name="{name}"'.format(name=name))
             connection.commit()
             connection.close()
-            logging.info("Program %s successfully deleted.", name)
+            LOGGER.info("Program %s successfully deleted.", name)
             return {'message': 'Program successfully deleted.', 'data': {}}, 200
         else:
             connection.close()
-            logging.info("Program %s not found.", name)
+            LOGGER.info("Program %s not found.", name)
             return {'message': 'Program not found.', 'data': {}}, 404
 
 
@@ -253,7 +251,7 @@ class DeviceList(Resource):
         connection.commit()
         connection.close()
 
-        logging.info("Device %s added successfully.", id)
+        LOGGER.info("Device %s added successfully.", id)
 
         return {'message': 'Device registered', 'data': args}, 201
 

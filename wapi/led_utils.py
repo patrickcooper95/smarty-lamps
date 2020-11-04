@@ -4,7 +4,6 @@ import random
 import sqlite3 as sql
 import time
 
-
 import board
 import neopixel
 
@@ -12,21 +11,17 @@ import wapi.colors as colors
 import wapi.configs as configs
 import wapi.get_sun as get_sun
 
-num_led = 40
-np = neopixel.NeoPixel(board.D18, num_led)
 
 loop = True
 
-programs = ["pulse", "console"]
 
-
-def set_color(color):
+def set_color(np, color):
     """Set a static color."""
     red, green, blue = colors.get_rgb(color)
     np.fill((red, green, blue))
 
 
-def pulse():
+def pulse(np):
     """Create a blue pulsing effect."""
     r = 0
     g = 0
@@ -57,7 +52,7 @@ def pulse():
             raise (e)
 
 
-def it_was_all_yellow():
+def it_was_all_yellow(np):
     """Create lights for Yellow."""
     yellow = (255, 255, 0)
     np.fill(yellow)
@@ -87,7 +82,7 @@ def it_was_all_yellow():
             raise (e)
 
 
-def console():
+def console(np):
     """Create a starship blinking console effect."""
     init_color = (255, 100, 0)
 
@@ -113,7 +108,7 @@ def console():
             raise (e)
 
 
-def red_alert():
+def red_alert(np):
     """Red alert flash."""
     r = 255
     g = 0
@@ -140,7 +135,7 @@ def red_alert():
             raise (e)
 
 
-def rainbow():
+def rainbow(np):
     """Rainbow effect."""
     r = 255
     g = 0
@@ -181,8 +176,8 @@ def rainbow():
         except KeyboardInterrupt as e:
             raise (e)
 
-
-def light_show():
+            
+def light_show(np):
     """Light show effect."""
     r = 255
     g = 255
@@ -200,7 +195,7 @@ def light_show():
         for led in range(1, num_led, 2):
             np[led] = (255, 0, 0)
 
-def sun():
+def sun(np):
     """Lighting effects programmed to follow the sunrise and sunset."""
     first_time = True
     TIME = datetime.datetime.strptime("12:05:00", "%H:%M:%S").time()
@@ -275,9 +270,9 @@ def sun():
         time.sleep(1.0)
 
 
-def alarm():
+def alarm(np):
     """Simulate sunlight through the window at specified time."""
-    r, g, b = 1, 1, 1
+    r, g, b = 0, 0, 0
     np.fill((r, g, b))
 
     wake_up_time = datetime.datetime.strptime("07:30:00", "%H:%M:%S").time()

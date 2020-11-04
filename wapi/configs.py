@@ -1,10 +1,13 @@
+import logging
 import os
 
 import yaml
 
-# Get environment variable for environment - default to PROD if not found
+# Get environment variable for environment - default to DEV if not found
+# TODO: Use dot-env to make this work
 environment = os.getenv("ENV", "DEV")
 base_path = os.path.join("/home", "pi", environment, "smarty-lamps")
+db_path = os.path.join('/home', 'sqlite', 'live', 'devices.db')
 
 
 # Load in config object
