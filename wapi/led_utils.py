@@ -65,7 +65,7 @@ def it_was_all_yellow(np):
                     break
 
                 green -= 1
-                for pixel in range(50):
+                for pixel in range(num_led):
                     np[pixel] = (255, green, 0)
                 time.sleep(0.5)
 
@@ -74,7 +74,7 @@ def it_was_all_yellow(np):
                     break
 
                 green += 1
-                for pixel in range(50):
+                for pixel in range(num_led):
                     np[pixel] = (255, green, 0)
                 time.sleep(0.5)
 
@@ -87,16 +87,16 @@ def console(np):
     init_color = (255, 100, 0)
 
     np.fill((0, 0, 0))
-    init_num = random.randint(0, 49)
+    init_num = random.randint(0, num_led)
     init_pixels = []
     for p in range(init_num):
-        pixel = random.randint(0, 49)
+        pixel = random.randint(0, num_led)
         init_pixels.append(pixel)
         np[pixel] = init_color
 
     while loop:
         try:
-            pixel = random.randint(0, 49)
+            pixel = random.randint(0, num_led)
             index = random.randint(1, 3)
             sleep = [0.5, 1, 1.5]
             np[pixel] = (0, 0, 0)
@@ -176,6 +176,24 @@ def rainbow(np):
         except KeyboardInterrupt as e:
             raise (e)
 
+            
+def light_show(np):
+    """Light show effect."""
+    r = 255
+    g = 255
+    b = 255
+
+    np.fill((r, g, b))
+
+    for led in range(1, num_led, 2):
+        np[led] = (255, 0, 0)
+
+    while loop:
+        for led in range(1, num_led, 2):
+            np[led] = (255, 255, 255)
+        time.sleep(0.3)
+        for led in range(1, num_led, 2):
+            np[led] = (255, 0, 0)
 
 def sun(np):
     """Lighting effects programmed to follow the sunrise and sunset."""
