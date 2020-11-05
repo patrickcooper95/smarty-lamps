@@ -99,5 +99,7 @@ class Light:
             utils.rainbow(self.np)
         elif prog == "wake me up":
             utils.alarm(self.np)
+        elif prog == "light show":
+            utils.light_show(self.np)
         else:
             utils.set_color(self.np, prog)

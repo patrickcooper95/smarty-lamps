@@ -10,11 +10,9 @@ import wapi.led_utils as utils
 
 from led_control import Light
 
-logging.basicConfig(filename='daemon.log', level=logging.INFO,
-                    format='%(asctime)s %(name)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-fh = logging.FileHandler("./daemon.log")
-LOGGER = logging.getLogger(__name__)
-LOGGER.addHandler(fh)
+logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log', level=logging.INFO,
+                    format='%(asctime)s | %(levelname)s | %(name)s | %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+LOGGER = logging.getLogger("wapid.py")
 LOGGER.info("Daemon starting.")
 
 # Create Light object to be used

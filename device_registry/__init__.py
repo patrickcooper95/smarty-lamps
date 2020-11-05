@@ -15,7 +15,7 @@ import wapi.configs as configs
 
 # Logging
 logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log', level=logging.INFO,
-                    format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+                    format='%(asctime)s | %(levelname)s | %(name)s | %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 # fh = logging.FileHandler("./daemon.log")
 LOGGER = logging.getLogger(__name__)
 # LOGGER.addHandler(fh)
@@ -45,10 +45,9 @@ def get_db():
 def table_exists(conn):
     """check if devices table exists"""
     cur = conn.cursor()
-    tables = cur.execute('SELECT COUNT(*) '
-                         'FROM sqlite_master '
-                         'WHERE type="table" AND name="devices"')
-    LOGGER.info(f"Running query: {tables}")
+    query = 'SELECT COUNT(*) FROM sqlite_master WHERE type="table" AND name="devices"'
+    tables = cur.execute(query)
+    LOGGER.info(f"Running query: {query}")
 
     if tables.fetchone()[0] == 1:
         return True
@@ -90,12 +89,6 @@ def record_exists(table, id, cursor):
         return False
 
 
-@app.route("/update-device")
-def update_page():
-    """Serve HTML interface to interact with devices."""
-    return render_template('update-device.html')
-
-
 @app.route("/")
 def index():
     """Present some documentation"""
@@ -133,13 +126,12 @@ class Effects(Resource):
         for field in args:
             if field[1] is not None:
                 new_color = field[1].lower()
-                LOGGER.info(new_color)
                 
                 program_exists = record_exists("colors", new_color, cur)
                 if program_exists:
                     cur.execute(f'UPDATE devices SET {field[0]}="{new_color}" WHERE identifier="{identifier}"')
                     connection.commit()
-                    LOGGER.info("Device %s set to %s", field[0], field[1])
+                    LOGGER.info("Updating device to %s", field[1])
                 else:
                     LOGGER.info("Program %s not found.", field[1])
                     return {'message': 'Program not found.', 'data': {}}, 404
