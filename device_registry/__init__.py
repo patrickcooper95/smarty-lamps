@@ -14,8 +14,9 @@ from yaml import Loader, load
 import wapi.configs as configs
 
 # Logging
-logging.basicConfig(level=logging.INFO)
-format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(message)s')
+logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log',
+                    level=logging.INFO,
+                    format='%(asctime)s | %(levelname)s | %(name)s | %(message)s')
 LOGGER = logging.getLogger(__name__)
 
 # Create an instance of Flask
@@ -37,7 +38,7 @@ def get_db():
         # print(sql.version)
         return conn
     except Error as e:
-        print(e)
+        LOGGER.error(e)
 
 
 def table_exists(conn):
@@ -67,7 +68,7 @@ def create_table():
                         'controller_gateway TEXT)')
             connection.commit()
         except Error as e:
-            LOGGER.info(e)
+            LOGGER.error(e)
         finally:
             connection.close()
 
@@ -194,10 +195,12 @@ class Program(Resource):
             cur.execute('DELETE FROM colors WHERE name="{name}"'.format(name=name))
             connection.commit()
             connection.close()
+
             LOGGER.info("Program %s successfully deleted.", name)
             return {'message': 'Program successfully deleted.', 'data': {}}, 200
         else:
             connection.close()
+
             LOGGER.info("Program %s not found.", name)
             return {'message': 'Program not found.', 'data': {}}, 404
 
@@ -210,6 +213,8 @@ class DeviceList(Resource):
         cur = connection.cursor()
         dev_list = cur.execute('SELECT * FROM devices').fetchall()
         connection.close()
+
+        LOGGER.info("Program list returned successfully.")
 
         return {'message': 'Success', 'data': dev_list}, 200
 
@@ -258,10 +263,14 @@ class Device(Resource):
             device = cur.execute('SELECT * FROM devices WHERE identifier="{identifier}"'.format(
                 identifier=identifier)).fetchall()
             connection.close()
+
+            LOGGER.info("Devices returned successfully.")
             return {'message': 'Success', 'data': device}, 200
         else:
             print(cur.execute('SELECT EXISTS({sub_query})'.format(sub_query=exists_query)).fetchall())
             connection.close()
+
+            LOGGER.info("Device %s not found.", identifier)
             return {'message': 'Device not found', 'data': {}}, 404
 
     def put(self, identifier):
