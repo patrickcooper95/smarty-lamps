@@ -10,10 +10,15 @@ import wapi.led_utils as utils
 
 from led_control import Light
 
-logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log', level=logging.INFO,
-                    format='%(asctime)s | %(levelname)s | %(name)s | %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(level=logging.INFO)
+format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(message)s')
 LOGGER = logging.getLogger("wapid.py")
-LOGGER.info("Daemon starting.")
+fh = logging.FileHandler('/home/pi/logs/smarty-lamps.log')
+fh.setFormatter(format)
+LOGGER.addHandler(fh)
+
+# First logging message - show daemon is online
+LOGGER.info("Daemon starting...")
 
 # Create Light object to be used
 lights = Light()
@@ -34,6 +39,7 @@ class LedWorker(threading.Thread):
 
 def set_program(prog):
     lights.update(prog)
+    LOGGER.info("Spawned thread finished.")
 
 
 def main_program():

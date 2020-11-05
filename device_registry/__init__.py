@@ -14,11 +14,9 @@ from yaml import Loader, load
 import wapi.configs as configs
 
 # Logging
-logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log', level=logging.INFO,
-                    format='%(asctime)s | %(levelname)s | %(name)s | %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-# fh = logging.FileHandler("./daemon.log")
+logging.basicConfig(level=logging.INFO)
+format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(message)s')
 LOGGER = logging.getLogger(__name__)
-# LOGGER.addHandler(fh)
 
 # Create an instance of Flask
 app = Flask(__name__)
