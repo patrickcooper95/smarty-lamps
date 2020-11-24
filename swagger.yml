@@ -56,9 +56,9 @@ paths:
               time:
                 type: string
                 description: ""
-        responses:
-          200:
-            description: Successfully updated time
+      responses:
+        200:
+          description: Successfully updated time
 
   /devices:
     get:
