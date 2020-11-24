@@ -136,7 +136,7 @@ class AlarmTime(Resource):
 
                 cur.execute(f'UPDATE times SET {field[0]}="{new_time}" WHERE id="{id}"')
                 conn.commit()
-                LOGGER.info("Time entry: %s set to %s", field[0], field[1])
+                LOGGER.info("Time set to %s", field[1])
 
         conn.close()
         return {'message': 'Successful.', 'data': {}}, 200

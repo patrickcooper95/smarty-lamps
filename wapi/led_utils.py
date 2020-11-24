@@ -277,6 +277,7 @@ def alarm(np):
     cur = conn.cursor()
     result = cur.execute('SELECT * FROM times WHERE id="alarm"').fetchall()
     alarm_time = result[0][1]
+    conn.close()
 
     wake_up_time = datetime.datetime.strptime(alarm_time, "%H:%M:%S").time()
 
