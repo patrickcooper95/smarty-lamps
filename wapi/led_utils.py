@@ -275,22 +275,14 @@ def alarm(np):
     r, g, b = 0, 0, 0
     np.fill((r, g, b))
 
-    wake_up_time = datetime.datetime.strptime("07:30:00", "%H:%M:%S").time()
+    wake_up_time = datetime.datetime.strptime("22:30:00", "%H:%M:%S").time()
 
     while loop:
         current_time = datetime.datetime.now().time().replace(second=0, microsecond=0)
         if wake_up_time.hour == current_time.hour:
             if wake_up_time == current_time:
-                for num in range(255):
-                    if not loop:
-                       break
-
-                    # Slowly increase brightness
-                    r += 1
-                    g += 1
-                    b += 1
-                    np.fill((r, g, b))
-                    time.sleep(1.0)
+                np.fill((255, 128, 0))
+                break
         time.sleep(1.0)
 
 
