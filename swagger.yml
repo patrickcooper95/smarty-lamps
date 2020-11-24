@@ -35,6 +35,28 @@ paths:
       responses:
         200:
           description: Successfully modified device
+
+  /times/{id}:
+    put:
+      operationId: "Times.put"
+      tags:
+        - "Times"
+      summary: "Change a clock program's time."
+      description: "Change a clock program's time."
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: True
+        - name: time
+          in: body
+          schema:
+            type: object
+            properties:
+              time:
+                type: string
+                description: ""
+
   /devices:
     get:
       operationId: "DeviceList.get"

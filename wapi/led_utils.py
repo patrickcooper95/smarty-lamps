@@ -4,9 +4,6 @@ import random
 import sqlite3 as sql
 import time
 
-import board
-import neopixel
-
 import wapi.colors as colors
 import wapi.configs as configs
 import wapi.get_sun as get_sun
@@ -65,7 +62,7 @@ def it_was_all_yellow(np):
                     break
 
                 green -= 1
-                for pixel in range(num_led):
+                for pixel in range(np.num):
                     np[pixel] = (255, green, 0)
                 time.sleep(0.5)
 
@@ -74,7 +71,7 @@ def it_was_all_yellow(np):
                     break
 
                 green += 1
-                for pixel in range(num_led):
+                for pixel in range(np.num):
                     np[pixel] = (255, green, 0)
                 time.sleep(0.5)
 
@@ -87,16 +84,16 @@ def console(np):
     init_color = (255, 100, 0)
 
     np.fill((0, 0, 0))
-    init_num = random.randint(0, num_led)
+    init_num = random.randint(0, np.num)
     init_pixels = []
     for p in range(init_num):
-        pixel = random.randint(0, num_led)
+        pixel = random.randint(0, np.num)
         init_pixels.append(pixel)
         np[pixel] = init_color
 
     while loop:
         try:
-            pixel = random.randint(0, num_led)
+            pixel = random.randint(0, np.num)
             index = random.randint(1, 3)
             sleep = [0.5, 1, 1.5]
             np[pixel] = (0, 0, 0)
@@ -185,15 +182,16 @@ def light_show(np):
 
     np.fill((r, g, b))
 
-    for led in range(1, num_led, 2):
+    for led in range(1, np.num, 2):
         np[led] = (255, 0, 0)
 
     while loop:
-        for led in range(1, num_led, 2):
+        for led in range(1, np.num, 2):
             np[led] = (255, 255, 255)
         time.sleep(0.3)
-        for led in range(1, num_led, 2):
+        for led in range(1, np.num, 2):
             np[led] = (255, 0, 0)
+
 
 def sun(np):
     """Lighting effects programmed to follow the sunrise and sunset."""
@@ -275,7 +273,12 @@ def alarm(np):
     r, g, b = 0, 0, 0
     np.fill((r, g, b))
 
-    wake_up_time = datetime.datetime.strptime("22:30:00", "%H:%M:%S").time()
+    conn = sql.connect(configs.db_path)
+    cur = conn.cursor()
+    result = cur.execute('SELECT * FROM times WHERE id="alarm"').fetchall()
+    alarm_time = result[0][1]
+
+    wake_up_time = datetime.datetime.strptime(alarm_time, "%H:%M:%S").time()
 
     while loop:
         current_time = datetime.datetime.now().time().replace(second=0, microsecond=0)
