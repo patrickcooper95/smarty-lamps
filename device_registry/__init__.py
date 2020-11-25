@@ -14,11 +14,10 @@ from yaml import Loader, load
 import wapi.configs as configs
 
 # Logging
-logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log', level=logging.INFO,
-                    format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-# fh = logging.FileHandler("./daemon.log")
+logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log',
+                    level=logging.INFO,
+                    format='%(asctime)s | %(levelname)s | %(name)s | %(message)s')
 LOGGER = logging.getLogger(__name__)
-# LOGGER.addHandler(fh)
 
 # Create an instance of Flask
 app = Flask(__name__)
@@ -39,16 +38,15 @@ def get_db():
         # print(sql.version)
         return conn
     except Error as e:
-        print(e)
+        LOGGER.error(e)
 
 
 def table_exists(conn):
     """check if devices table exists"""
     cur = conn.cursor()
-    tables = cur.execute('SELECT COUNT(*) '
-                         'FROM sqlite_master '
-                         'WHERE type="table" AND name="devices"')
-    LOGGER.info(f"Running query: {tables}")
+    query = 'SELECT COUNT(*) FROM sqlite_master WHERE type="table" AND name="devices"'
+    tables = cur.execute(query)
+    LOGGER.info(f"Running query: {query}")
 
     if tables.fetchone()[0] == 1:
         return True
@@ -70,7 +68,7 @@ def create_table():
                         'controller_gateway TEXT)')
             connection.commit()
         except Error as e:
-            LOGGER.info(e)
+            LOGGER.error(e)
         finally:
             connection.close()
 
@@ -88,12 +86,6 @@ def record_exists(table, id, cursor):
         return True
     else:
         return False
-
-
-@app.route("/update-device")
-def update_page():
-    """Serve HTML interface to interact with devices."""
-    return render_template('update-device.html')
 
 
 @app.route("/")
@@ -133,13 +125,12 @@ class Effects(Resource):
         for field in args:
             if field[1] is not None:
                 new_color = field[1].lower()
-                LOGGER.info(new_color)
                 
                 program_exists = record_exists("colors", new_color, cur)
                 if program_exists:
                     cur.execute(f'UPDATE devices SET {field[0]}="{new_color}" WHERE identifier="{identifier}"')
                     connection.commit()
-                    LOGGER.info("Device %s set to %s", field[0], field[1])
+                    LOGGER.info("Updating device to %s", field[1])
                 else:
                     LOGGER.info("Program %s not found.", field[1])
                     return {'message': 'Program not found.', 'data': {}}, 404
@@ -204,10 +195,12 @@ class Program(Resource):
             cur.execute('DELETE FROM colors WHERE name="{name}"'.format(name=name))
             connection.commit()
             connection.close()
+
             LOGGER.info("Program %s successfully deleted.", name)
             return {'message': 'Program successfully deleted.', 'data': {}}, 200
         else:
             connection.close()
+
             LOGGER.info("Program %s not found.", name)
             return {'message': 'Program not found.', 'data': {}}, 404
 
@@ -220,6 +213,8 @@ class DeviceList(Resource):
         cur = connection.cursor()
         dev_list = cur.execute('SELECT * FROM devices').fetchall()
         connection.close()
+
+        LOGGER.info("Program list returned successfully.")
 
         return {'message': 'Success', 'data': dev_list}, 200
 
@@ -268,10 +263,14 @@ class Device(Resource):
             device = cur.execute('SELECT * FROM devices WHERE identifier="{identifier}"'.format(
                 identifier=identifier)).fetchall()
             connection.close()
+
+            LOGGER.info("Devices returned successfully.")
             return {'message': 'Success', 'data': device}, 200
         else:
             print(cur.execute('SELECT EXISTS({sub_query})'.format(sub_query=exists_query)).fetchall())
             connection.close()
+
+            LOGGER.info("Device %s not found.", identifier)
             return {'message': 'Device not found', 'data': {}}, 404
 
     def put(self, identifier):
