@@ -36,6 +36,23 @@ paths:
         200:
           description: Successfully modified device
 
+  /times:
+    get:
+      operationId: "TimesList.get"
+      tags:
+        - "Times"
+      summary: "Show the the list of times."
+      description: "Read the list of times"
+      responses:
+        200:
+          description: "Successful read of times list"
+          schema:
+            type: "string"
+            items:
+              properties:
+                id:
+                  type: "string"
+
   /times/{id}:
     put:
       operationId: "Times.put"

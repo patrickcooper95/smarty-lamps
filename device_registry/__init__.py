@@ -113,6 +113,18 @@ def index():
 
 
 class AlarmTime(Resource):
+
+    def get(self):
+        connection = get_db()
+        cur = connection.cursor()
+        time_list = cur.execute('SELECT * FROM times WHERE id="alarm"').fetchall()
+        connection.close()
+
+        LOGGER.info("Get all programs successful.")
+
+        return {'message': 'Success', 'data': time_list}, 200
+
+
     def put(self, id):
         id = id.lower()
         conn = get_db()
