@@ -370,6 +370,7 @@ class Device(Resource):
             return {'message': 'Device not found.', 'data': {}}, 404
 
 
+api.add_resource(AlarmTime, '/times')
 api.add_resource(AlarmTime, '/times/<string:id>')
 api.add_resource(Effects, '/effects/<string:identifier>')
 api.add_resource(DeviceList, '/devices')
