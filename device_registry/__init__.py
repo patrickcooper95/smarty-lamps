@@ -112,7 +112,7 @@ def index():
         return markdown.markdown(content)
 
 
-class AlarmTime(Resource):
+class TimesList(Resource):
 
     def get(self):
         connection = get_db()
@@ -124,6 +124,8 @@ class AlarmTime(Resource):
 
         return {'message': 'Success', 'data': time_list}, 200
 
+
+class AlarmTime(Resource):
 
     def put(self, id):
         id = id.lower()
@@ -370,7 +372,7 @@ class Device(Resource):
             return {'message': 'Device not found.', 'data': {}}, 404
 
 
-api.add_resource(AlarmTime, '/times')
+api.add_resource(TimesList, '/times')
 api.add_resource(AlarmTime, '/times/<string:id>')
 api.add_resource(Effects, '/effects/<string:identifier>')
 api.add_resource(DeviceList, '/devices')
