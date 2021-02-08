@@ -12,7 +12,7 @@ dynamic_programs = [
     "yellow flow",
     "sun",
     "rainbow",
-    "wake me up"
+    "alarm"
 ]
 
 
@@ -97,7 +97,7 @@ class Light:
             utils.sun(self.np)
         elif prog == "rainbow":
             utils.rainbow(self.np)
-        elif prog == "wake me up":
+        elif prog == "alarm":
             utils.alarm(self.np)
         elif prog == "light show":
             utils.light_show(self.np)

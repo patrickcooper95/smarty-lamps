@@ -78,6 +78,8 @@ def record_exists(table, id, cursor):
         query = 'SELECT * FROM devices WHERE identifier="{identifier}"'.format(identifier=id)
     elif table == "colors":
         query = 'SELECT * FROM colors WHERE name="{identifier}"'.format(identifier=id)
+    elif table == "times":
+        query = 'SELECT * FROM times WHERE id="{identifier}"'.format(identifier=id)
     else:
         return False
 
@@ -100,6 +102,50 @@ def index():
 
         # Convert to HTML
         return markdown.markdown(content)
+
+
+class TimesList(Resource):
+
+    def get(self):
+        connection = get_db()
+        cur = connection.cursor()
+        time_list = cur.execute('SELECT * FROM times WHERE id="alarm"').fetchall()
+        connection.close()
+
+        LOGGER.info("Get all programs successful.")
+
+        return {'message': 'Success', 'data': time_list}, 200
+
+
+class AlarmTime(Resource):
+
+    def put(self, id):
+        id = id.lower()
+        conn = get_db()
+        cur = conn.cursor()
+        time_exists = record_exists("times", id, cur)
+
+        if not time_exists:
+            LOGGER.info("Time entry: %s not found.", id)
+            return {'message': 'Time entry not found.', 'data': {}}, 404
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('time', required=True)
+
+        # Parse the arguments into an object
+        args = parser.parse_args().items()
+
+        for field in args:
+            if field[1] is not None:
+                new_time = field[1].lower()
+                LOGGER.info(new_time)
+
+                cur.execute(f'UPDATE times SET {field[0]}="{new_time}" WHERE id="{id}"')
+                conn.commit()
+                LOGGER.info("Time set to %s", field[1])
+
+        conn.close()
+        return {'message': 'Successful.', 'data': {}}, 200
 
 
 class Effects(Resource):
@@ -325,6 +371,8 @@ class Device(Resource):
             return {'message': 'Device not found.', 'data': {}}, 404
 
 
+api.add_resource(TimesList, '/times')
+api.add_resource(AlarmTime, '/times/<string:id>')
 api.add_resource(Effects, '/effects/<string:identifier>')
 api.add_resource(DeviceList, '/devices')
 api.add_resource(Device, '/devices/<string:identifier>')
