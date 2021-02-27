@@ -1,9 +1,12 @@
 import datetime
+from importlib import reload
+from inspect import getmembers, isfunction
 import os
 import random
 import sqlite3 as sql
 import time
 
+import programs
 import wapi.colors as colors
 import wapi.configs as configs
 import wapi.get_sun as get_sun
@@ -16,67 +19,6 @@ def set_color(np, color):
     """Set a static color."""
     red, green, blue = colors.get_rgb(color)
     np.fill((red, green, blue))
-
-
-def pulse(np):
-    """Create a blue pulsing effect."""
-    r = 0
-    g = 0
-    b = 255
-    while loop:
-        try:
-            for count in range(100):
-                if not loop:
-                    break
-
-                np.fill((r, g, b))
-                time.sleep(0.05)
-                r += 1
-                g += 1
-
-            for count in range(100):
-                if not loop:
-                    break
-
-                r -= 1
-                g -= 1
-                np.fill((r, g, b))
-                time.sleep(0.05)
-            # Make blue stay longer
-            time.sleep(0.1)
-
-        except KeyboardInterrupt as e:
-            raise (e)
-
-
-def it_was_all_yellow(np):
-    """Create lights for Yellow."""
-    yellow = (255, 255, 0)
-    np.fill(yellow)
-
-    while loop:
-        try:
-            green = 255
-            for inc in range(172):
-                if not loop:
-                    break
-
-                green -= 1
-                for pixel in range(np.num):
-                    np[pixel] = (255, green, 0)
-                time.sleep(0.5)
-
-            for inc_up in range(172):
-                if not loop:
-                    break
-
-                green += 1
-                for pixel in range(np.num):
-                    np[pixel] = (255, green, 0)
-                time.sleep(0.5)
-
-        except KeyboardInterrupt as e:
-            raise (e)
 
 
 def console(np):
@@ -101,33 +43,6 @@ def console(np):
             time.sleep(sleep[index-1])
             np[pixel] = init_color
             np.show()
-        except KeyboardInterrupt as e:
-            raise (e)
-
-
-def red_alert(np):
-    """Red alert flash."""
-    r = 255
-    g = 0
-    b = 0
-
-    while loop:
-        try:
-            for count in range(230):
-                if not loop:
-                    break
-
-                np.fill((r, g, b))
-                r -= 1
-
-            for count in range(230):
-                if not loop:
-                    break
-
-                np.fill((r, g, b))
-                r += 1
-            time.sleep(1.0)
-
         except KeyboardInterrupt as e:
             raise (e)
 
@@ -315,3 +230,21 @@ def rest(rise_time, set_time):
     # Get time deltas
     time_to_sunrise = (sunrise - right_now)
     time_to_sunset = (sunset - right_now)
+
+
+programs_dict = {}
+
+
+def index():
+    """ Reindex the programs package for new programs. """
+    reload(programs)
+
+    functions = getmembers(programs, isfunction)
+
+    for func in functions:
+        programs_dict[func[0][0]] = func[0][1]
+
+
+def start_program(np, program):
+    """ Set the lights to the new program. """
+    programs_dict[program](np)

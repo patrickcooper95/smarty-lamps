@@ -80,26 +80,30 @@ class Light:
         """Public method - set new program."""
         self.program = prog
 
-        if self.program in dynamic_programs:
-            self.dynamic = True
-        else:
-            self.dynamic = False
+        utils.start_program(self.np, self.program)
 
-        if prog == "pulse":
-            utils.pulse(self.np)
-        elif prog == "console":
-            utils.console(self.np)
-        elif prog == "red alert":
-            utils.red_alert(self.np)
-        elif prog == "yellow flow":
-            utils.it_was_all_yellow(self.np)
-        elif prog == "sun":
-            utils.sun(self.np)
-        elif prog == "rainbow":
-            utils.rainbow(self.np)
-        elif prog == "alarm":
-            utils.alarm(self.np)
-        elif prog == "light show":
-            utils.light_show(self.np)
-        else:
-            utils.set_color(self.np, prog)
+        # if self.program in dynamic_programs:
+        #     self.dynamic = True
+        # else:
+        #     self.dynamic = False
+        #
+        # # dict.get(prog)
+        #
+        # if prog == "pulse":
+        #     utils.pulse(self.np)
+        # elif prog == "console":
+        #     utils.console(self.np)
+        # elif prog == "red alert":
+        #     utils.red_alert(self.np)
+        # elif prog == "yellow flow":
+        #     utils.it_was_all_yellow(self.np)
+        # elif prog == "sun":
+        #     utils.sun(self.np)
+        # elif prog == "rainbow":
+        #     utils.rainbow(self.np)
+        # elif prog == "alarm":
+        #     utils.alarm(self.np)
+        # elif prog == "light show":
+        #     utils.light_show(self.np)
+        # else:
+        #     utils.set_color(self.np, prog)
