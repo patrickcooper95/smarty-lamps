@@ -3,5 +3,7 @@ from . import test
 from .test import test
 from . import pulse
 from .pulse import pulse
-from . import other_test
-from .other_test import other_test
+from . import red_alert
+from .red_alert import red_alert
+from . import it_was_all_yellow
+from .it_was_all_yellow import it_was_all_yellow

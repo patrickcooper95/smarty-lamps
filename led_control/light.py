@@ -80,6 +80,11 @@ class Light:
         """Public method - set new program."""
         self.program = prog
 
+        if self.program in dynamic_programs:
+            self.dynamic = True
+        else:
+            self.dynamic = False
+
         utils.start_program(self.np, self.program)
 
         # if self.program in dynamic_programs:

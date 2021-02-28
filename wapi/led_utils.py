@@ -6,7 +6,6 @@ import random
 import sqlite3 as sql
 import time
 
-import programs
 import wapi.colors as colors
 import wapi.configs as configs
 import wapi.get_sun as get_sun
@@ -14,6 +13,7 @@ import wapi.get_sun as get_sun
 
 loop = True
 
+import programs
 
 def set_color(np, color):
     """Set a static color."""
