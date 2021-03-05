@@ -246,12 +246,12 @@ programs_dict = {}
 
 def index():
     """ Reindex the programs package for new programs. """
-    LOGGER.info("Attempting to reload programs package")
+    LOGGER.info("Attempting to load programs package")
 
     try:
         reload(programs)
     except Exception as e:
-        LOGGER.info(e)
+        LOGGER.error(e)
 
     functions = getmembers(programs, isfunction)
 

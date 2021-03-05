@@ -23,7 +23,6 @@ LOGGER.info("Daemon starting...")
 # Create Light object to be used
 lights = Light()
 
-
 class LedWorker(threading.Thread):
     def __init__(self, *args, **kwargs):
         super(LedWorker, self).__init__(*args, **kwargs)

@@ -1,7 +1,15 @@
 import board
+import logging
 import neopixel
 
 from wapi import colors, led_utils as utils
+
+logging.basicConfig(level=logging.INFO)
+format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(message)s')
+LOGGER = logging.getLogger("light.py")
+fh = logging.FileHandler('/home/pi/logs/smarty-lamps.log')
+fh.setFormatter(format)
+LOGGER.addHandler(fh)
 
 # Current list of programs that are dynamic
 # TODO: This will eventually be class-based
@@ -79,12 +87,14 @@ class Light:
     def update(self, prog):
         """Public method - set new program."""
         self.program = prog
+        LOGGER.info("Lights object set to %s", self.program)
 
         if self.program in dynamic_programs:
             self.dynamic = True
         else:
             self.dynamic = False
 
+        LOGGER.info("Calling utils function.")
         utils.start_program(self.np, self.program)
 
         # if self.program in dynamic_programs:
