@@ -1,11 +1,8 @@
 import time
 
-import wapi.led_utils as utils
 
 
-# Set the loop variable to the global utils loop variable
-loop = utils.loop
-
+loop = True
 
 def red_alert(np):
     """Red alert flash."""
