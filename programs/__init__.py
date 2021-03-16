@@ -1,6 +1,4 @@
 
-from . import test
-from .test import test
 from . import pulse
 from .pulse import pulse
 from . import red_alert

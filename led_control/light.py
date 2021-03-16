@@ -17,6 +17,7 @@ dynamic_programs = [
     "pulse",
     "console",
     "red alert",
+    "red_alert",
     "yellow flow",
     "sun",
     "rainbow",
