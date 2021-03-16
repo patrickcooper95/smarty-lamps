@@ -264,9 +264,13 @@ def index():
 
 def start_program(obj, np, prog):
     """ Set the lights to the new program. """
-    LOGGER.info("Starting program: %s", prog)
-    programs_dict[prog](obj, np)
-    LOGGER.info("Program started")
+    if obj.dynamic:
+        LOGGER.info("Starting program: %s", prog)
+        programs_dict[prog](obj, np)
+        LOGGER.info("Program started")
+    else:
+        # Set static color
+        set_color(np, prog)
 
 # Run index every time led_utils is imported
 index()
