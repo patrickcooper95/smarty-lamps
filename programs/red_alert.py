@@ -1,26 +1,23 @@
 import time
 
 
-
-loop = True
-
-def red_alert(np):
+def red_alert(light_obj, np):
     """Red alert flash."""
     r = 255
     g = 0
     b = 0
 
-    while loop:
+    while light_obj.loop:
         try:
             for count in range(230):
-                if not loop:
+                if not light_obj.loop:
                     break
 
                 np.fill((r, g, b))
                 r -= 1
 
             for count in range(230):
-                if not loop:
+                if not light_obj.loop:
                     break
 
                 np.fill((r, g, b))

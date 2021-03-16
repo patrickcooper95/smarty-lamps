@@ -1,19 +1,15 @@
 import time
 
 
-
-loop = True
-
-
-def pulse(np):
+def pulse(light_obj, np):
     """Create a blue pulsing effect."""
     r = 0
     g = 0
     b = 255
-    while loop:
+    while light_obj.loop:
         try:
             for count in range(100):
-                if not loop:
+                if not light_obj.loop:
                     break
 
                 np.fill((r, g, b))
@@ -22,7 +18,7 @@ def pulse(np):
                 g += 1
 
             for count in range(100):
-                if not loop:
+                if not light_obj.loop:
                     break
 
                 r -= 1

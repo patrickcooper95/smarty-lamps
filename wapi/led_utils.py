@@ -1,7 +1,7 @@
 import datetime
 from importlib import reload
 from inspect import getmembers, isfunction
-# import logging
+import logging
 import os
 import random
 import sqlite3 as sql
@@ -12,12 +12,12 @@ import wapi.configs as configs
 import wapi.get_sun as get_sun
 
 
-# logging.basicConfig(level=logging.INFO)
-# format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(message)s')
-# LOGGER = logging.getLogger("led_utils.py")
-# fh = logging.FileHandler('/home/pi/logs/smarty-lamps.log')
-# fh.setFormatter(format)
-# LOGGER.addHandler(fh)
+logging.basicConfig(level=logging.INFO)
+format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(message)s')
+LOGGER = logging.getLogger("led_utils.py")
+fh = logging.FileHandler('/home/pi/logs/smarty-lamps.log')
+fh.setFormatter(format)
+LOGGER.addHandler(fh)
 
 loop = True
 
@@ -246,7 +246,7 @@ programs_dict = {}
 
 def index():
     """ Reindex the programs package for new programs. """
-    # LOGGER.info("Attempting to load programs package")
+    LOGGER.info("Attempting to load programs package")
 
     try:
         reload(programs)
@@ -259,14 +259,14 @@ def index():
     for func in functions:
         programs_dict[func[0]] = func[1]
 
-    # LOGGER.info("Programs indexed successfully")
+    LOGGER.info("Programs indexed successfully")
 
 
-def start_program(np, prog):
+def start_program(obj, np, prog):
     """ Set the lights to the new program. """
-    # LOGGER.info("Starting program: %s", program)
-    programs_dict[prog](np)
-    # LOGGER.info("Program started")
+    LOGGER.info("Starting program: %s", prog)
+    programs_dict[prog](obj, np)
+    LOGGER.info("Program started")
 
 # Run index every time led_utils is imported
 index()
