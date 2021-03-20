@@ -255,7 +255,7 @@ def index():
         # LOGGER.error(e)
 
     functions = getmembers(programs, isfunction)
-
+    LOGGER.info(len(functions))
     for func in functions:
         programs_dict[func[0]] = func[1]
 
