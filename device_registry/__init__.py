@@ -12,6 +12,7 @@ import markdown
 from yaml import Loader, load
 
 import wapi.configs as configs
+import wapi.led_utils as utils
 
 # Logging
 logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log',
@@ -215,13 +216,15 @@ class ProgramList(Resource):
         blue = args['b']
         new_record = (name, red, green, blue)
 
-        # TODO: Fix this create_table()
         connection = get_db()
         cur = connection.cursor()
         cur.execute('INSERT INTO colors(name, r, g, b) ' +
                     'VALUES(?,?,?,?)', new_record)
         connection.commit()
         connection.close()
+
+        # Re-index programs package for new dynamic programs
+        utils.index()
 
         LOGGER.info("Added program %s successfully.", name)
 
