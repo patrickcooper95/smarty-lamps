@@ -1,23 +1,17 @@
 import datetime
 from importlib import reload
 from inspect import getmembers, isfunction
-import logging
 import os
 import random
 import sqlite3 as sql
 import time
 
+import config
 import wapi.colors as colors
 import wapi.configs as configs
 import wapi.get_sun as get_sun
 
-
-logging.basicConfig(level=logging.INFO)
-format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(message)s')
-LOGGER = logging.getLogger("led_utils.py")
-fh = logging.FileHandler('/home/pi/logs/smarty-lamps.log')
-fh.setFormatter(format)
-LOGGER.addHandler(fh)
+LOGGER = config.logging_config(__name__)
 
 loop = True
 

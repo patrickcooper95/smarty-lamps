@@ -11,7 +11,7 @@ import wapi.led_utils as utils
 from led_control import Light
 
 logging.basicConfig(level=logging.INFO)
-format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(message)s')
+format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(threadName)s | %(message)s')
 LOGGER = logging.getLogger("wapid.py")
 fh = logging.FileHandler('/home/pi/logs/smarty-lamps.log')
 fh.setFormatter(format)

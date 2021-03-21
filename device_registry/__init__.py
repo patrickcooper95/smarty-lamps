@@ -3,7 +3,6 @@ import logging
 import os
 import sqlite3 as sql
 from sqlite3 import Error
-import logging
 
 from flask import Flask, render_template
 from flask_restful import Api, Resource, reqparse
@@ -11,14 +10,12 @@ from flask_swagger_ui import get_swaggerui_blueprint
 import markdown
 from yaml import Loader, load
 
+import config
 import wapi.configs as configs
 import wapi.led_utils as utils
 
 # Logging
-logging.basicConfig(filename='/home/pi/logs/smarty-lamps.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(levelname)s | %(name)s | %(message)s')
-LOGGER = logging.getLogger(__name__)
+LOGGER = config.logging_config(__name__)
 
 # Create an instance of Flask
 app = Flask(__name__)
