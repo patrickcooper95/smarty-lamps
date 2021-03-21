@@ -238,24 +238,23 @@ paths:
               name:
                 type: string
                 description: Program Name
+                example: pulsing-magenta
               r:
                 type: integer
                 description: Red Value
+                example: 255
               g:
                 type: integer
                 description: Green Value
+                example: 0
               b:
                 type: integer
                 description: Blue Value
+                example: 255
               path:
                 type: string
                 description: Path to function, if dynamic
-            examples:
-              name: pulsing-magenta
-              r: 255
-              g: 0
-              b: 255
-              path: programs/pulsing_magenta.py
+                example: programs/pulsing_magenta.py
       responses:
         201:
           description: Successfully created color in list

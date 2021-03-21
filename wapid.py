@@ -69,11 +69,6 @@ def main_program():
             LOGGER.info("Starting new thread.")
             led_worker.start()
 
-            if lights.dynamic:
-                LOGGER.info("Program is dynamic.")
-            else:
-                LOGGER.info("Program is static.")
-
 
 context = daemon.DaemonContext(
     files_preserve = [fh.stream,]
