@@ -7,3 +7,7 @@ from . import it_was_all_yellow
 from .it_was_all_yellow import it_was_all_yellow
 from . import rainbow
 from .rainbow import rainbow
+from . import console
+from .console import console
+from . import alarm
+from .alarm import alarm

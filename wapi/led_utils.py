@@ -24,74 +24,6 @@ def set_color(np, color):
     np.fill((red, green, blue))
 
 
-def console(np):
-    """Create a starship blinking console effect."""
-    init_color = (255, 100, 0)
-
-    np.fill((0, 0, 0))
-    init_num = random.randint(0, np.num)
-    init_pixels = []
-    for p in range(init_num):
-        pixel = random.randint(0, np.num)
-        init_pixels.append(pixel)
-        np[pixel] = init_color
-
-    while loop:
-        try:
-            pixel = random.randint(0, np.num)
-            index = random.randint(1, 3)
-            sleep = [0.5, 1, 1.5]
-            np[pixel] = (0, 0, 0)
-            np.show()
-            time.sleep(sleep[index-1])
-            np[pixel] = init_color
-            np.show()
-        except KeyboardInterrupt as e:
-            raise (e)
-
-
-def rainbow(np):
-    """Rainbow effect."""
-    r = 255
-    g = 0
-    b = 0
-
-    while loop:
-        try:
-            for count in range(255):
-                if not loop:
-                    break
-
-                np.fill((r, g, b))
-                r -= 1
-                g += 1
-
-                time.sleep(1.0)
-
-            for count in range(255):
-                if not loop:
-                    break
-
-                np.fill((r, g, b))
-                g -= 1
-                b += 1
-
-                time.sleep(1.0)
-
-            for count in range(255):
-                if not loop:
-                    break
-
-                np.fill((r, g, b))
-                b -= 1
-                r += 1
-
-                time.sleep(1.0)
-
-        except KeyboardInterrupt as e:
-            raise (e)
-
-            
 def light_show(np):
     """Light show effect."""
     r = 255
@@ -183,28 +115,6 @@ def sun(np):
 
                     np.fill((r, g, b))
                     time.sleep(3.0)
-        time.sleep(1.0)
-
-
-def alarm(np):
-    """Simulate sunlight through the window at specified time."""
-    r, g, b = 0, 0, 0
-    np.fill((r, g, b))
-
-    conn = sql.connect(configs.db_path)
-    cur = conn.cursor()
-    result = cur.execute('SELECT * FROM times WHERE id="alarm"').fetchall()
-    alarm_time = result[0][1]
-    conn.close()
-
-    wake_up_time = datetime.datetime.strptime(alarm_time, "%H:%M:%S").time()
-
-    while loop:
-        current_time = datetime.datetime.now().time().replace(second=0, microsecond=0)
-        if wake_up_time.hour == current_time.hour:
-            if wake_up_time == current_time:
-                np.fill((255, 128, 0))
-                break
         time.sleep(1.0)
 
 
