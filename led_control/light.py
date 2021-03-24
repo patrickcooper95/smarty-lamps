@@ -18,7 +18,8 @@ dynamic_programs = [
     "yellow flow",
     "sun",
     "rainbow",
-    "alarm"
+    "alarm",
+    "atlantis"
 ]
 
 

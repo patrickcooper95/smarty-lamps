@@ -11,3 +11,6 @@ from . import console
 from .console import console
 from . import alarm
 from .alarm import alarm
+from .atlantis import atlantis
+from . import atlantis
+
