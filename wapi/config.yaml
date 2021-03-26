@@ -1,22 +1,10 @@
 # Weather API Credentials
-KEY: "432cb1883011f2e49c5efc67020305c0"
+KEY: <>
 BASE_URL: "https://api.openweathermap.org/data/2.5/weather?"
-
 
 # ENV Configs
 DEV: '/home/pi/DEV'
 PROD: '/home/pi/WAPI'
-
-# Coordinates for weather tracking
-Moulton:
-  LAT: 34.481590
-  LON: -87.292412
-  ZIP: 35650
-
-New_York:
-  LAT: 40.772360
-  LON: -73.958770
-  ZIP: 10028
 
 Programs:
   Pulse: "pulse"
