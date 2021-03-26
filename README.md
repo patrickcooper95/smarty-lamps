@@ -1,4 +1,5 @@
-# Smarty Lamps ![](android-chrome-192x192.png)
+![](android-chrome-192x192.png)
+# Smarty Lamps 
 
 ## Description
 
@@ -51,5 +52,5 @@ at sunset and off at sunrise).
 `b`: `255`,  
 `callable`: `null`  
 
-
-Built for use with Raspberry Pi. ![](https://banner2.cleanpng.com/20181122/lwz/kisspng-raspberry-pi-clip-art-sugar-logo-computer-icons-5bf78320c77f09.4425010015429476168171.jpg)
+#
+![](https://www.raspberrypi.org/app/uploads/2017/06/Powered-by-Raspberry-Pi-Logo_Outline-Colour-Screen-500x153.png)
