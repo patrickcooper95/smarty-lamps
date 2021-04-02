@@ -9,7 +9,10 @@ def atlantis(light_obj, np):
             for count in range(light_obj.num):
                 if not light_obj.loop:
                     break
-
+                red = 255
+                for x in range(255):
+                    np[count] = ((red, 20, 147))
+                    red -= 1
                 np[count] = ((0, 128, 128))
                 time.sleep(1)
 
