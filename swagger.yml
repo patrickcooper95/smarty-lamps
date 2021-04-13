@@ -230,23 +230,31 @@ paths:
       parameters:
         - name: name
           in: body
-          description: Color to create
+          description: Program to create
           required: True
           schema:
             type: object
             properties:
               name:
                 type: string
-                description: Color Name
+                description: Program Name
+                example: pulsing-magenta
               r:
                 type: integer
                 description: Red Value
+                example: 255
               g:
                 type: integer
                 description: Green Value
+                example: 0
               b:
                 type: integer
                 description: Blue Value
+                example: 255
+              path:
+                type: string
+                description: Path to function, if dynamic
+                example: programs/pulsing_magenta.py
       responses:
         201:
           description: Successfully created color in list

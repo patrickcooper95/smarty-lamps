@@ -1,7 +1,12 @@
 import board
 import neopixel
 
+import config
 from wapi import colors, led_utils as utils
+
+
+# get logger
+LOGGER = config.logging_config(__name__)
 
 # Current list of programs that are dynamic
 # TODO: This will eventually be class-based
@@ -9,10 +14,12 @@ dynamic_programs = [
     "pulse",
     "console",
     "red alert",
+    "red_alert",
     "yellow flow",
     "sun",
     "rainbow",
-    "alarm"
+    "alarm",
+    "atlantis"
 ]
 
 
@@ -27,6 +34,7 @@ class Light:
         self._program = None
         self._dynamic = False
         self._on = True
+        self._loop = True
 
     def set_static(self, color):
         """Set a static color."""
@@ -41,6 +49,16 @@ class Light:
     @program.setter
     def program(self, new_program):
         self._program = new_program
+
+    @property
+    def loop(self):
+        """Defines whether dynamic loop is currently True/False."""
+        return self._loop
+
+    @loop.setter
+    def loop(self, switch):
+        if switch == True or switch == False:
+            self._loop = switch
 
     @property
     def on(self):
@@ -79,27 +97,12 @@ class Light:
     def update(self, prog):
         """Public method - set new program."""
         self.program = prog
+        LOGGER.info("Lights object set to %s", self.program)
 
         if self.program in dynamic_programs:
             self.dynamic = True
         else:
             self.dynamic = False
 
-        if prog == "pulse":
-            utils.pulse(self.np)
-        elif prog == "console":
-            utils.console(self.np)
-        elif prog == "red alert":
-            utils.red_alert(self.np)
-        elif prog == "yellow flow":
-            utils.it_was_all_yellow(self.np)
-        elif prog == "sun":
-            utils.sun(self.np)
-        elif prog == "rainbow":
-            utils.rainbow(self.np)
-        elif prog == "alarm":
-            utils.alarm(self.np)
-        elif prog == "light show":
-            utils.light_show(self.np)
-        else:
-            utils.set_color(self.np, prog)
+        # LOGGER.info("Calling utils function.")
+        utils.start_program(self, self.np, self.program)

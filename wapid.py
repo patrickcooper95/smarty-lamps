@@ -11,7 +11,7 @@ import wapi.led_utils as utils
 from led_control import Light
 
 logging.basicConfig(level=logging.INFO)
-format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(message)s')
+format = logging.Formatter('%(asctime)s | %(levelname)s | %(name)s | %(threadName)s | %(message)s')
 LOGGER = logging.getLogger("wapid.py")
 fh = logging.FileHandler('/home/pi/logs/smarty-lamps.log')
 fh.setFormatter(format)
@@ -22,7 +22,6 @@ LOGGER.info("Daemon starting...")
 
 # Create Light object to be used
 lights = Light()
-
 
 class LedWorker(threading.Thread):
     def __init__(self, *args, **kwargs):
@@ -55,7 +54,7 @@ def main_program():
 
             # Stop current forked thread for the dynamic program
             if lights.dynamic:
-                utils.loop = False
+                lights.loop = False
                 time.sleep(0.1)
 
                 try:
@@ -63,23 +62,12 @@ def main_program():
                 except NameError as e:
                     LOGGER.info(e)
 
-            # Update Light object
-            # lights.update(new_state)
-
             # Start new thread to initiate new program
-            # TODO: Eventually, change this to only kick off new thread if dynamic
             led_worker = LedWorker(target=set_program, args=(new_state,))
-            utils.loop = True
+            lights.loop = True
 
             LOGGER.info("Starting new thread.")
             led_worker.start()
-
-            LOGGER.info(f"Program set to: {lights.program}")
-            LOGGER.info(f"Brightness: {lights.brightness}")
-            if lights.dynamic:
-                LOGGER.info("Program is dynamic.")
-            else:
-                LOGGER.info("Program is static.")
 
 
 context = daemon.DaemonContext(
