@@ -1,4 +1,4 @@
-from device_registry import app
+from app import app
 from wapi import configs
 
 app.run(host='0.0.0.0')

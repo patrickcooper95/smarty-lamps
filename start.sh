@@ -2,15 +2,20 @@
 
 echo "Starting SmartyLamps in $1 environment."
 
-# Set environment for script and export for Python.
-ENVIRONMENT=$1
-export ENV=$ENVIRONMENT
+export PYTHON_BASE=/home/pi/env/bin
+
+# activate python virtual environment
+source $PYTHON_BASE/activate
+
+# Run alembic migrations
+echo "--- Applying alembic upgrades, if any ---"
+alembic upgrade head
 
 # Start the WAPI API and WAPI daemon.
-echo "--- Starting Flask API ---"
-sudo /home/pi/env/bin/python /home/pi/$ENVIRONMENT/smarty-lamps/run.py &
-
 echo "--- Starting WAPI daemon ---"
-sudo /home/pi/env/bin/python /home/pi/$ENVIRONMENT/smarty-lamps/wapid.py
+python /home/pi/$1/smarty-lamps/wapid.py
 
-echo "SmartyLamps started. Done."
+echo "--- Starting Flask API ---"
+python /home/pi/$1/smarty-lamps/run.py &
+
+echo "SmartyLamps started."
