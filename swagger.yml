@@ -274,3 +274,41 @@ paths:
       responses:
         200:
           description: Successfully deleted program.
+
+    put:
+      operationId: "Program.put"
+      tags:
+        - "Programs"
+      summary: Update a program
+      description: Update an attribute for a program
+      parameters:
+        - name: identifier
+          in: path
+          type: string
+          required: True
+        - name: identifier
+          in: body
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Program name
+              r:
+                type: string
+                description: Red value
+              g:
+                type: string
+                description: Green value
+              b:
+                type: string
+                description: Blue value
+              dynamic:
+                type: string
+                description: Boolean (0, 1) if the program is dynamic or not
+              callable_path:
+                type: string
+                description: Path to python callable, if dynamic
+      responses:
+        200:
+          description: Successfully updated program.
