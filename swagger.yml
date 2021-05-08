@@ -274,3 +274,39 @@ paths:
       responses:
         200:
           description: Successfully deleted program.
+
+    put:
+      operationId: "Program.put"
+      tags:
+        - "Programs"
+      summary: Update a program
+      description: Update an attribute for a program
+      parameters:
+        - name: identifier
+          in: path
+          type: string
+          required: True
+          schema:
+            type: object
+            properties:
+              name:
+                type: Blue_Wave
+                description: Program name
+              r:
+                type: 0
+                description: Red value
+              g:
+                type: 0
+                description: Green value
+              b:
+                type: 0
+                description: Blue value
+              dynamic:
+                type: 1
+                description: Boolean (0, 1) if the program is dynamic or not
+              callable_path:
+                type: programs/blue_wave.py
+                description: Path to python callable, if dynamic
+      responses:
+        200:
+          description: Successfully updated program.

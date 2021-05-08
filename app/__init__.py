@@ -199,24 +199,28 @@ class ProgramList(Resource):
         parser = reqparse.RequestParser()
 
         parser.add_argument('name', required=True)
-        parser.add_argument('r', required=True)
-        parser.add_argument('g', required=True)
-        parser.add_argument('b', required=True)
+        parser.add_argument('r', required=False)
+        parser.add_argument('g', required=False)
+        parser.add_argument('b', required=False)
+        parser.add_argument('dynamic', required=True)
+        parser.add_argument('callable_path', required=False)
 
         # Parse the arguments into an object
         args = parser.parse_args()
 
         # Parse arguments into a tuple for use with SQLite's *?* variable operator
-        name = args['name']
-        red = args['r']
-        green = args['g']
-        blue = args['b']
-        new_record = (name, red, green, blue)
+        name = args["name"]
+        red = args.get('r', 0)
+        green = args.get("g", 0)
+        blue = args.get("b", 0)
+        dynamic= args["dynamic"]
+        callable = args.get("callable_path", "")
+        new_record = (name, red, green, blue, dynamic, callable)
 
         connection = get_db()
         cur = connection.cursor()
-        cur.execute('INSERT INTO colors(name, r, g, b) ' +
-                    'VALUES(?,?,?,?)', new_record)
+        cur.execute('INSERT INTO colors(name, r, g, b, dynamic, callable_path) ' +
+                    'VALUES(?,?,?,?,?,?)', new_record)
         connection.commit()
         connection.close()
 
@@ -249,6 +253,37 @@ class Program(Resource):
 
             LOGGER.info("Program %s not found.", name)
             return {'message': 'Program not found.', 'data': {}}, 404
+
+    def put(self, name):
+
+        name = name.lower()
+        create_table()
+        connection = get_db()
+        cur = connection.cursor()
+        exists_query = f'SELECT * FROM colors WHERE name="{name}"'
+
+        if not cur.execute('SELECT EXISTS({sub_query})'.format(sub_query=exists_query)).fetchall()[0][0] == 1:
+            return {'message': 'Program not found.', 'data': {}}, 404
+
+        parser = reqparse.RequestParser()
+
+        parser.add_argument('name', required=False)
+        parser.add_argument('r', required=False)
+        parser.add_argument('g', required=False)
+        parser.add_argument('b', required=False)
+        parser.add_argument('dynamic', required=False)
+        parser.add_argument('callable_path', required=False)
+
+        # Parse the arguments into an object
+        args = parser.parse_args().items()
+
+        for field in args:
+            if field[1] is not None:
+                new_value = field[1].lower()
+                cur.execute(f'UPDATE colors SET {field[0]}="{new_value}" WHERE name="{name}"')
+                connection.commit()
+        connection.close()
+        return {'message': 'Program successfully updated.', 'data': {}}, 200
 
 
 class DeviceList(Resource):
