@@ -286,6 +286,8 @@ paths:
           in: path
           type: string
           required: True
+        - name: identifier
+          in: body
           schema:
             type: object
             properties:
