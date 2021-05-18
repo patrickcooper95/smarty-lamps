@@ -251,7 +251,11 @@ paths:
                 type: integer
                 description: Blue Value
                 example: 255
-              path:
+              dynamic:
+                type: integer
+                description: Program nature
+                example: 1
+              callable_path:
                 type: string
                 description: Path to function, if dynamic
                 example: programs/pulsing_magenta.py
