@@ -25,7 +25,7 @@ dynamic_programs = [
 
 class Light:
     def __init__(self):
-        self.num = 45
+        self.num = 50
         self.np = neopixel.NeoPixel(board.D18, self.num)
         self._brightness = 1.0
         self._r = 0
