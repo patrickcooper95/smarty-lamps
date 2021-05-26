@@ -10,17 +10,7 @@ LOGGER = config.logging_config(__name__)
 
 # Current list of programs that are dynamic
 # TODO: This will eventually be class-based
-dynamic_programs = [
-    "pulse",
-    "console",
-    "red alert",
-    "red_alert",
-    "yellow flow",
-    "sun",
-    "rainbow",
-    "alarm",
-    "atlantis"
-]
+dynamic_programs = utils.programs_dict
 
 
 class Light:
@@ -99,7 +89,7 @@ class Light:
         self.program = prog
         LOGGER.info("Lights object set to %s", self.program)
 
-        if self.program in dynamic_programs:
+        if self.program in dynamic_programs.keys():
             self.dynamic = True
         else:
             self.dynamic = False
