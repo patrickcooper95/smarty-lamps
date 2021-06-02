@@ -6,7 +6,5 @@ BASE_URL: "https://api.openweathermap.org/data/2.5/weather?"
 DEV: '/home/pi/DEV'
 PROD: '/home/pi/WAPI'
 
-Programs:
-  Pulse: "pulse"
-  Red Alert: "red alert"
-  Yellow Flow: "it was all yellow"
+CONFIG_LOG_DIR: /home/pi/logs/
+
