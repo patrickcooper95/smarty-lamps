@@ -9,12 +9,12 @@ def light_show(light_obj, np):
 
     np.fill((r, g, b))
 
-    for led in range(1, np.num, 2):
+    for led in range(1, light_obj.num, 2):
         np[led] = (255, 0, 0)
 
     while light_obj.loop:
-        for led in range(1, np.num, 2):
+        for led in range(1, light_obj.num, 2):
             np[led] = (255, 255, 255)
         time.sleep(0.3)
-        for led in range(1, np.num, 2):
+        for led in range(1, light_obj.num, 2):
             np[led] = (255, 0, 0)

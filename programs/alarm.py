@@ -22,6 +22,6 @@ def alarm(obj, np):
         current_time = datetime.datetime.now().time().replace(second=0, microsecond=0)
         if wake_up_time.hour == current_time.hour:
             if wake_up_time == current_time:
-                np.fill((255, 128, 0))
+                np.fill((255, 255, 255))
                 break
         time.sleep(1.0)
