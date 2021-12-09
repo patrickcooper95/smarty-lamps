@@ -2,7 +2,7 @@ import time
 
 
 def pulse_christmas(light_obj, np):
-    """Create a blue pulsing effect."""
+    """Create a Christmas red/green pulsing effect."""
     r = 255
     g = 0
     b = 0
@@ -12,9 +12,10 @@ def pulse_christmas(light_obj, np):
                 break
 
             np.fill((r, g, b))
-            time.sleep(0.05)
+            time.sleep(0.01)
             r -= 1
             g += 1
+        time.sleep(1)
 
         for count in range(255):
             if not light_obj.loop:
@@ -23,4 +24,5 @@ def pulse_christmas(light_obj, np):
             r += 1
             g -= 1
             np.fill((r, g, b))
-            time.sleep(0.05)
+            time.sleep(0.01)
+        time.sleep(1)
