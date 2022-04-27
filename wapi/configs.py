@@ -8,7 +8,7 @@ import yaml
 environment = os.getenv("ENV", "DEV")
 base_path = os.path.join("/home", "pi", environment, "smarty-lamps")
 db_path = os.path.join('/home', 'sqlite', 'live', 'devices.db')
-
+sqlalchemy_database_url = f"sqlite:///{db_path}"
 
 # Load in config object
 with open(os.path.join(base_path, "wapi", "config.yaml"), 'r') as stream:

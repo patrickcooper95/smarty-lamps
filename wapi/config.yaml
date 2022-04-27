@@ -6,5 +6,8 @@ BASE_URL: "https://api.openweathermap.org/data/2.5/weather?"
 DEV: '/home/pi/DEV'
 PROD: '/home/pi/WAPI'
 
+# SQLite connection string
+SQLALCHEMY_DATABASE_URI: sqlite:///students.sqlite3
+
 CONFIG_LOG_DIR: /home/pi/logs/
 

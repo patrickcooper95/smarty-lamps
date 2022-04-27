@@ -5,6 +5,7 @@ import sqlite3 as sql
 from sqlite3 import Error
 
 from flask import Flask, render_template
+from flask_marshmallow import Marshmallow
 from flask_restful import Api, Resource, reqparse
 from flask_swagger_ui import get_swaggerui_blueprint
 import markdown
@@ -17,8 +18,10 @@ import wapi.led_utils as utils
 # Logging
 LOGGER = config.logging_config(__name__)
 
-# Create an instance of Flask
+# Create an instance of Flask and Marshmallow
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = configs.sqlalchemy_database_url
+ma = Marshmallow(app)
 
 # Create the API
 api = Api(app)
