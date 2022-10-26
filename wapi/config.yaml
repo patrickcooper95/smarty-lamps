@@ -7,7 +7,8 @@ DEV: '/home/pi/DEV'
 PROD: '/home/pi/WAPI'
 
 # SQLite connection string
-SQLALCHEMY_DATABASE_URI: sqlite:///students.sqlite3
+SQLALCHEMY_DATABASE_URI: sqlite:////home/sqlite/live/devices.db
+LOCAL_DATABASE_URI: sqlite:///test_data/sqlite/devices.db
 
 CONFIG_LOG_DIR: /home/pi/logs/
 

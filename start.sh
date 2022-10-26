@@ -2,6 +2,8 @@
 
 echo "Starting SmartyLamps in $1 environment."
 
+# export relevant ENV vars
+export ENVIRONMENT=$1
 export PYTHON_BASE=/home/pi/env/bin
 
 # activate python virtual environment

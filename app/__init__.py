@@ -8,6 +8,7 @@ from flask import Flask, render_template
 from flask_marshmallow import Marshmallow
 from flask_restful import Api, Resource, reqparse
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_sqlalchemy import SQLAlchemy
 import markdown
 from yaml import Loader, load
 
@@ -18,9 +19,19 @@ import wapi.led_utils as utils
 # Logging
 LOGGER = config.logging_config(__name__)
 
+# Get application environment
+env = os.environ["ENVIRONMENT"]
+
 # Create an instance of Flask and Marshmallow
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = configs.sqlalchemy_database_url
+db = SQLAlchemy()
+
+if env == "PROD":
+    app.config["SQLALCHEMY_DATABASE_URI"] = config.base_configs["SQLALCHEMY_DATABASE_URI"]
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = config.base_configs["LOCAL_DATABASE_URI"]
+
+db.init_app(app)
 ma = Marshmallow(app)
 
 # Create the API
