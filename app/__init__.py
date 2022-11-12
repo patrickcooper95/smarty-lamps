@@ -20,7 +20,7 @@ import wapi.led_utils as utils
 LOGGER = config.logging_config(__name__)
 
 # Get application environment
-env = os.environ["ENVIRONMENT"]
+env = os.environ.get("ENVIRONMENT", "local")
 
 # Create an instance of Flask and Marshmallow
 app = Flask(__name__)
