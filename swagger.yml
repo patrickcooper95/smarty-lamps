@@ -316,3 +316,28 @@ paths:
       responses:
         200:
           description: Successfully updated program.
+  /subway:
+    get:
+      operationId: "Subway.get"
+      tags:
+        - "Subway"
+      summary: "Subway service data from NYCT"
+      description: "Get the status of trains for a particular service and route subset"
+      parameters:
+        - name: service
+          in: body
+          type: string
+          required: True
+        - name: segment
+          in: body
+          type: string
+          required: True
+      responses:
+        200:
+          description: "Successfully retrieved subway data"
+          schema:
+            type: "string"
+            items:
+              properties:
+                vehicle:
+                  type: "string"
