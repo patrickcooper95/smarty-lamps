@@ -1,7 +1,13 @@
+import os
+import importlib.resources as pkg_resources
+from pathlib import Path
+
 import yaml
 
+# Get package directory
+pkg_dir = Path(__file__).parent.resolve()
 
-with open("config.yaml", "r") as config_file:
+with open(os.path.join(pkg_dir, "config.yaml"), "r") as config_file:
     Config = yaml.safe_load(config_file)
 
 

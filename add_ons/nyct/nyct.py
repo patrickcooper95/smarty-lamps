@@ -8,16 +8,8 @@ from google.transit import gtfs_realtime_pb2
 import pandas as pd
 import numpy as np
 
-import utils
-from utils import Config
-
-
-# Get start time for recording when data was retrieved
-ts = time.time()
-start_time = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
+from add_ons.nyct import utils
+from add_ons.nyct.utils import Config
 
 
 class Train:
@@ -89,7 +81,7 @@ def _create_trains(feed, service: str):
 
 def filter_stations(route_id, borough):
     """Filter the Stations manifest for only relevant stations."""
-    stations_df = pd.read_csv("stations.csv")
+    stations_df = pd.read_csv(os.path.join(utils.pkg_dir, "stations.csv"))
     stations_df = stations_df[
         (stations_df["Borough"] == borough) &
         (stations_df["Daytime Routes"].str.contains(route_id))
@@ -98,6 +90,11 @@ def filter_stations(route_id, borough):
 
 
 def get_trains(service: str, segment: str, create_json: bool = True, debug: bool = False):
+
+    # Get start time for recording when data was retrieved
+    ts = time.time()
+    start_time = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
     feed = gtfs_realtime_pb2.FeedMessage()
     header = gtfs_realtime_pb2.FeedHeader()
     en = gtfs_realtime_pb2.FeedEntity()
@@ -108,8 +105,8 @@ def get_trains(service: str, segment: str, create_json: bool = True, debug: bool
         os.path.join(Config['base_gtfs_url'],
                      line_feed))
 
-    with open("api_key", "r") as key_file:
-        api_key = key_file.read()
+    with open(os.path.join(utils.pkg_dir, "api_key"), "r") as key_file:
+        api_key = key_file.read().rstrip()
     req.add_header("x-api-key", api_key)
     response = urllib.request.urlopen(req)
     response = response.read()

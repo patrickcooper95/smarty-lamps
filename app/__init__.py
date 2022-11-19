@@ -11,9 +11,9 @@ import markdown
 from yaml import Loader, load
 
 import config
-from add_ons.nyct import nyct
 import wapi.configs as configs
 import wapi.led_utils as utils
+from add_ons.nyct import nyct as NYCT
 
 # Logging
 LOGGER = config.logging_config(__name__)
@@ -409,7 +409,7 @@ class Device(Resource):
 
 class Subway(Resource):
     def get(self, service, segment):
-        return {"message": "Success", "data": nyct.get_trains(service, segment)}, 200
+        return {"message": "Success", "data": NYCT.get_trains(service, segment)}, 200
 
 
 api.add_resource(TimesList, '/times')
@@ -419,4 +419,4 @@ api.add_resource(DeviceList, '/devices')
 api.add_resource(Device, '/devices/<string:identifier>')
 api.add_resource(ProgramList, '/program')
 api.add_resource(Program, '/program/<string:name>')
-api.add_resource(Subway, '/subway')
+api.add_resource(Subway, '/subway/<string:service>/<string:segment>')

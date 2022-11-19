@@ -316,7 +316,7 @@ paths:
       responses:
         200:
           description: Successfully updated program.
-  /subway:
+  /subway/{service}/{segment}:
     get:
       operationId: "Subway.get"
       tags:
@@ -325,11 +325,11 @@ paths:
       description: "Get the status of trains for a particular service and route subset"
       parameters:
         - name: service
-          in: body
+          in: path
           type: string
           required: True
         - name: segment
-          in: body
+          in: path
           type: string
           required: True
       responses:
