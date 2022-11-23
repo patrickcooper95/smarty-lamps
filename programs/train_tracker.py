@@ -11,6 +11,7 @@ SERVICE = "6"
 SERVICE_SEGMENT = "M"
 SERVICE_COLOR = (0, 255, 0)
 STOPPED_DELAY = 1
+LOGGER = logging.getLogger()
 
 
 def trunc_float(num):
@@ -28,12 +29,14 @@ def train_engine(np, led, fade, event):
             r, g, b = 0, 0, 0
             for i in range(200):
                 if event.is_set():
+                    np[led] = ((0, 0, 0))
                     break
                 np[led] = ((r, g, b))
                 time.sleep(0.005)
                 g += 1
             for i in range(200):
                 if event.is_set():
+                    np[led] = ((0, 0, 0))
                     break
                 np[led] = ((r, g, b))
                 time.sleep(0.005)
@@ -57,28 +60,28 @@ def train_tracker(light_obj, np):
     while light_obj.loop:
         event = threading.Event()
         thread_list = []
-        
-        stop_ids_list = []
+        leds_in_use = []
 
         for train in trains["data"]:
-            if train["stop_id"][:-1] in stop_ids_list:
-                continue
-            stop_ids_list.append(train["stop_id"][:-1])
             led = Config["led_station_mapping"][int(SERVICE)][int(train["stop_id"][:-1])]
+            if led in leds_in_use:
+                continue
+            leds_in_use.append(led)
+
             fade = True if train["status"] in ("IN_TRANSIT_TO", "INCOMING_AT") else False
 
             new_thread = threading.Thread(target=train_engine, args=(np, led, fade, event))
             thread_list.append(new_thread)
             new_thread.start()
 
-        logging.info(f"{len(trains)} new threads started to display trains")
+        LOGGER.info(f"{len(trains)} new threads started to display trains")
         time.sleep(10)
-        logging.info("Retrieving trains from NYCT...")
+        LOGGER.info("Retrieving trains from NYCT...")
         start = time.time()
         trains = NYCT.get_trains(SERVICE, SERVICE_SEGMENT)
-        logging.info(f"Trains retrieved in: {trunc_float(time.time()-start)} seconds")
+        LOGGER.info(f"Trains retrieved in: {trunc_float(time.time()-start)} seconds")
         event.set()
-        logging.info(f"Sending stop events to threads: {thread_list}")
+        LOGGER.info(f"Sending stop events to threads: {thread_list}")
 
         for index, thread in enumerate(thread_list):
             thread.join()
