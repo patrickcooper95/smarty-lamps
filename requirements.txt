@@ -6,10 +6,12 @@ Flask-RESTful==0.3.8
 flask_swagger_ui==3.25.0
 flask-marshmallow
 flask-sqlalchemy
+gtfs-realtime-bindings==0.0.7
 itsdangerous==1.1.0
 Jinja2==2.11.1
 Markdown==3.2.1
 MarkupSafe==1.1.1
+pandas
 pytz==2019.3
 pyyaml==5.4.1
 six==1.14.0

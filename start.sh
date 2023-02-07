@@ -1,6 +1,6 @@
 #! /bin/bash
 
-echo "Starting SmartyLamps in $1 environment."
+echo "Starting SmartyLamps in $1 environment"
 
 # export relevant ENV vars
 export ENVIRONMENT=$1
@@ -20,4 +20,5 @@ python /home/pi/$1/smarty-lamps/wapid.py
 echo "--- Starting Flask API ---"
 python /home/pi/$1/smarty-lamps/run.py &
 
-echo "SmartyLamps started."
+echo "Start scripts complete, SmartyLamps Flask API starting..."
+echo "Please wait for Flask debug logging to print to the console before ending your SSH session."
