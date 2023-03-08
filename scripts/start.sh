@@ -1,6 +1,7 @@
 #! /bin/bash
 
 echo "Starting SmartyLamps in $1 environment"
+export ENV=$1
 
 export PYTHON_BASE=/home/pi/env/bin
 

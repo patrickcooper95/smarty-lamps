@@ -5,8 +5,13 @@ import yaml
 
 # Get environment variable for environment - default to DEV if not found
 # TODO: Use dot-env to make this work
-environment = os.getenv("ENV", "DEV")
-base_path = os.path.join("/home", "pi", environment, "smarty-lamps")
+environment = os.getenv("ENVIRONMENT")
+print(environment)
+if environment == "TEST":
+    base_path = "/app"
+else:
+    base_path = f"/home/pi/{environment}/smarty-lamps"
+
 db_path = os.path.join('/home', 'sqlite', 'live', 'devices.db')
 
 
