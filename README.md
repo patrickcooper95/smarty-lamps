@@ -9,6 +9,9 @@ Using the Python NeoPixel library and a compatible LED strip,
 Smarty Lamps becomes a fully-customizable, Wi-Fi accessible lighting
 device.
 
+## Demo
+[NYC Subway 6 Train Lights Demo](https://drive.google.com/drive/folders/1h1FELQJO5ZwmgyqpamkEMSwAVYpMP7Th?usp=drive_link)
+
 ## Getting Started
 Clone the repository to `~/DEV`. This will allow you to use the
 `start.sh` script to kick off the API and database-watching daemon.
