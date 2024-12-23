@@ -10,6 +10,9 @@ Smarty Lamps becomes a fully-customizable, Wi-Fi accessible lighting
 device.
 
 ## Demo
+While there are endless lighting effects you can program with Smarty Lamps, the following is a more elaborate one.
+This example uses live data from the NYC subway using Google Transit APIs. A solid flash indicates that a train is currently stopped
+at that station (the stations go from left to right: Downtown to Uptown Manhattan, spanning Brooklyn Bridge / City Hall to 125th St). A fading/pulsing light indicates that the train is in transit.
 [NYC Subway 6 Train Lights Demo](https://drive.google.com/drive/folders/1h1FELQJO5ZwmgyqpamkEMSwAVYpMP7Th?usp=drive_link)
 
 ## Getting Started
